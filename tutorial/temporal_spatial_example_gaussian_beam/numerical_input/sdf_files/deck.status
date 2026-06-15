@@ -1,0 +1,197 @@
+ EPOCH2D v4.20.1   v4.20.1-9-g285e99cc-dirty 1781533210.103            
+
+Deck state:  1
+
+ Beginning "constant" block
+
+ 	Element lambda0=1.0 * micron handled OK
+ 	Element pulse_FWHM=2 * micron handled OK
+ 	Element pulse_tau=15 * femto handled OK
+ 	Element w_0=pulse_FWHM / 1.665 handled OK
+ 	Element intens=1e22 handled OK
+ 	Element a0=8.5e-4 * sqrt(intens * lambda0^2) handled OK
+ 	Element pulse_defocus=10 * micron handled OK
+ 	Element x_spot=pulse_defocus handled OK
+ 	Element x_R=pi * w_0^2 / lambda0 handled OK
+ 	Element RC=x_spot * (1.0 + (x_R/x_spot)^2) handled OK
+ 	Element w_bnd=w_0 * sqrt( 1.0 + (x_spot/x_R)^2) handled OK
+ 	Element gouy=atan(x_spot/x_R) handled OK
+
+ Ending "constant" block
+
+ Beginning "control" block
+
+ 	Element nx=1400 handled OK
+ 	Element ny=1000 handled OK
+ 	Element nsteps=-1 handled OK
+ 	Element t_end=250 * femto handled OK
+ 	Element x_min=-40 * micro handled OK
+ 	Element x_max=30 * micro handled OK
+ 	Element y_min=-25 * micro handled OK
+ 	Element y_max=25 * micro handled OK
+ 	Element dt_multiplier=0.9 handled OK
+ 	Element dlb_threshold=0.8 handled OK
+ 	Element use_random_seed=T handled OK
+ 	Element stdout_frequency=100 handled OK
+
+ Ending "control" block
+
+ Beginning "boundaries" block
+
+ 	Element bc_x_min=simple_laser handled OK
+ 	Element bc_x_max=open handled OK
+ 	Element bc_y_min=open handled OK
+ 	Element bc_y_max=open handled OK
+
+ Ending "boundaries" block
+
+ Beginning "laser" block
+
+ 	Element boundary=x_min handled OK
+ 	Element intensity_w_cm2=intens * (w_0 / w_bnd)^2 handled OK
+ 	Element lambda=lambda0 handled OK
+ 	Element phase=2.0 * pi/ lambda0 * y^2 / (2.0 * RC) - gouy handled OK
+ 	Element pol=0 handled OK
+ 	Element use_custom_profile=T handled OK
+ 	Element use_spatiotemporal_profile=T handled OK
+ 	Element profile=custom handled OK
+
+ Ending "laser" block
+
+ Beginning "output" block
+
+ 	Element use_offset_grid=F handled OK
+ 	Element dt_snapshot=5.0e-15 handled OK
+ 	Element full_dump_every=-1 handled OK
+ 	Element force_final_to_be_restartable=F handled OK
+ 	Element force_first_to_be_restartable=F handled OK
+ 	Element particles=never handled OK
+ 	Element px=never handled OK
+ 	Element py=never handled OK
+ 	Element pz=never handled OK
+ 	Element vx=never handled OK
+ 	Element vy=never handled OK
+ 	Element vz=never handled OK
+ 	Element charge=never handled OK
+ 	Element mass=never handled OK
+ 	Element particle_energy=never handled OK
+ 	Element particle_weight=never handled OK
+ 	Element species_id=never handled OK
+ 	Element grid=always handled OK
+ 	Element ex=always handled OK
+ 	Element ey=always handled OK
+ 	Element ez=never handled OK
+ 	Element bx=never handled OK
+ 	Element by=never handled OK
+ 	Element bz=always handled OK
+ 	Element jx=never handled OK
+ 	Element jy=never handled OK
+ 	Element jz=never handled OK
+ 	Element ppc=never handled OK
+ 	Element ekbar=never handled OK
+ 	Element mass_density=never handled OK
+ 	Element charge_density=never handled OK
+ 	Element temperature=never handled OK
+ 	Element poynt_flux=always handled OK
+ 	Element total_energy_sum=always handled OK
+
+ Ending "output" block
+
+Deck state:  2
+
+ Beginning "constant" block
+
+ 	Element lambda0=1.0 * micron handled OK
+ 	Element pulse_FWHM=2 * micron handled OK
+ 	Element pulse_tau=15 * femto handled OK
+ 	Element w_0=pulse_FWHM / 1.665 handled OK
+ 	Element intens=1e22 handled OK
+ 	Element a0=8.5e-4 * sqrt(intens * lambda0^2) handled OK
+ 	Element pulse_defocus=10 * micron handled OK
+ 	Element x_spot=pulse_defocus handled OK
+ 	Element x_R=pi * w_0^2 / lambda0 handled OK
+ 	Element RC=x_spot * (1.0 + (x_R/x_spot)^2) handled OK
+ 	Element w_bnd=w_0 * sqrt( 1.0 + (x_spot/x_R)^2) handled OK
+ 	Element gouy=atan(x_spot/x_R) handled OK
+
+ Ending "constant" block
+
+ Beginning "control" block
+
+ 	Element nx=1400 handled OK
+ 	Element ny=1000 handled OK
+ 	Element nsteps=-1 handled OK
+ 	Element t_end=250 * femto handled OK
+ 	Element x_min=-40 * micro handled OK
+ 	Element x_max=30 * micro handled OK
+ 	Element y_min=-25 * micro handled OK
+ 	Element y_max=25 * micro handled OK
+ 	Element dt_multiplier=0.9 handled OK
+ 	Element dlb_threshold=0.8 handled OK
+ 	Element use_random_seed=T handled OK
+ 	Element stdout_frequency=100 handled OK
+
+ Ending "control" block
+
+ Beginning "boundaries" block
+
+ 	Element bc_x_min=simple_laser handled OK
+ 	Element bc_x_max=open handled OK
+ 	Element bc_y_min=open handled OK
+ 	Element bc_y_max=open handled OK
+
+ Ending "boundaries" block
+
+ Beginning "laser" block
+
+ 	Element boundary=x_min handled OK
+ 	Element intensity_w_cm2=intens * (w_0 / w_bnd)^2 handled OK
+ 	Element lambda=lambda0 handled OK
+ 	Element phase=2.0 * pi/ lambda0 * y^2 / (2.0 * RC) - gouy handled OK
+ 	Element pol=0 handled OK
+ 	Element use_custom_profile=T handled OK
+ 	Element use_spatiotemporal_profile=T handled OK
+ 	Element profile=custom handled OK
+
+ Ending "laser" block
+
+ Beginning "output" block
+
+ 	Element use_offset_grid=F handled OK
+ 	Element dt_snapshot=5.0e-15 handled OK
+ 	Element full_dump_every=-1 handled OK
+ 	Element force_final_to_be_restartable=F handled OK
+ 	Element force_first_to_be_restartable=F handled OK
+ 	Element particles=never handled OK
+ 	Element px=never handled OK
+ 	Element py=never handled OK
+ 	Element pz=never handled OK
+ 	Element vx=never handled OK
+ 	Element vy=never handled OK
+ 	Element vz=never handled OK
+ 	Element charge=never handled OK
+ 	Element mass=never handled OK
+ 	Element particle_energy=never handled OK
+ 	Element particle_weight=never handled OK
+ 	Element species_id=never handled OK
+ 	Element grid=always handled OK
+ 	Element ex=always handled OK
+ 	Element ey=always handled OK
+ 	Element ez=never handled OK
+ 	Element bx=never handled OK
+ 	Element by=never handled OK
+ 	Element bz=always handled OK
+ 	Element jx=never handled OK
+ 	Element jy=never handled OK
+ 	Element jz=never handled OK
+ 	Element ppc=never handled OK
+ 	Element ekbar=never handled OK
+ 	Element mass_density=never handled OK
+ 	Element charge_density=never handled OK
+ 	Element temperature=never handled OK
+ 	Element poynt_flux=always handled OK
+ 	Element total_energy_sum=always handled OK
+
+ Ending "output" block
+
+ Initial conditions complete and valid.
