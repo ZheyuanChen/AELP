@@ -1,0 +1,111 @@
+ EPOCH2D v4.20.1   v4.20.1-9-g285e99cc-dirty 1781533594.953            
+
+Deck state:  1
+
+ Beginning "control" block
+
+ 	Element nx=500 handled OK
+ 	Element ny=nx handled OK
+ 	Element x_min=-10 * micron handled OK
+ 	Element x_max=-x_min handled OK
+ 	Element y_min=x_min handled OK
+ 	Element y_max=x_max handled OK
+ 	Element t_end=50 * femto handled OK
+ 	Element stdout_frequency=10 handled OK
+
+ Ending "control" block
+
+ Beginning "boundaries" block
+
+ 	Element bc_x_min=simple_laser handled OK
+ 	Element bc_x_max=open handled OK
+ 	Element bc_y_min=periodic handled OK
+ 	Element bc_y_max=periodic handled OK
+
+ Ending "boundaries" block
+
+ Beginning "constant" block
+
+ 	Element lambda0=1 * micron handled OK
+ 	Element theta=pi / 8.0 handled OK
+
+ Ending "constant" block
+
+ Beginning "laser" block
+
+ 	Element boundary=x_min handled OK
+ 	Element intensity_w_cm2=1.0e20 handled OK
+ 	Element lambda=lambda0 handled OK
+ 	Element use_custom_profile=T handled OK
+ 	Element use_spatiotemporal_profile=F handled OK
+
+ Ending "laser" block
+
+ Beginning "output" block
+
+ 	Element dt_snapshot=1 * micron / c handled OK
+ 	Element grid=always handled OK
+ 	Element ex=always handled OK
+ 	Element ey=always handled OK
+ 	Element ez=always handled OK
+ 	Element bx=always handled OK
+ 	Element by=always handled OK
+ 	Element bz=always handled OK
+
+ Ending "output" block
+
+Deck state:  2
+
+ Beginning "control" block
+
+ 	Element nx=500 handled OK
+ 	Element ny=nx handled OK
+ 	Element x_min=-10 * micron handled OK
+ 	Element x_max=-x_min handled OK
+ 	Element y_min=x_min handled OK
+ 	Element y_max=x_max handled OK
+ 	Element t_end=50 * femto handled OK
+ 	Element stdout_frequency=10 handled OK
+
+ Ending "control" block
+
+ Beginning "boundaries" block
+
+ 	Element bc_x_min=simple_laser handled OK
+ 	Element bc_x_max=open handled OK
+ 	Element bc_y_min=periodic handled OK
+ 	Element bc_y_max=periodic handled OK
+
+ Ending "boundaries" block
+
+ Beginning "constant" block
+
+ 	Element lambda0=1 * micron handled OK
+ 	Element theta=pi / 8.0 handled OK
+
+ Ending "constant" block
+
+ Beginning "laser" block
+
+ 	Element boundary=x_min handled OK
+ 	Element intensity_w_cm2=1.0e20 handled OK
+ 	Element lambda=lambda0 handled OK
+ 	Element use_custom_profile=T handled OK
+ 	Element use_spatiotemporal_profile=F handled OK
+
+ Ending "laser" block
+
+ Beginning "output" block
+
+ 	Element dt_snapshot=1 * micron / c handled OK
+ 	Element grid=always handled OK
+ 	Element ex=always handled OK
+ 	Element ey=always handled OK
+ 	Element ez=always handled OK
+ 	Element bx=always handled OK
+ 	Element by=always handled OK
+ 	Element bz=always handled OK
+
+ Ending "output" block
+
+ Initial conditions complete and valid.
