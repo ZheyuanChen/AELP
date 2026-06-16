@@ -43,8 +43,12 @@ Therefore, if the profile function is not time-varying, use_profile_function is 
 As a result, no field will be injected if no time-dependency in profile when a profile function is used. This also explains why t_profile or custom profile have no such issues: the former is to be multiplied with profile, whether or not it is customised, and the latter has a separate condition in laser_update_profile and is not affected by this logic flaw.
 Note that this logic flaw was introduced by me and is not present in the original EPOCH source code. It was intended for EPOCH to see if we want to use customised laser profile, but this side effect was introduced at the same time.
 
+The above issue is also raised in Github Issues.
+
 ## A Better Abbreviation:
 AEPI(I) (Arbitrary EPOCH Profile Initialisation? Interface?) pronounced yippee
+CELP (Customised/Customisation of/Customising EPOCH Laser Profile) pronounced in a similar way as Celtics
+
 
 ## Warnings
 1. I only modify the code for lasers attached to the x_min boundary, so please at this stage only try to inject a laser from the left boundary. Also, I actually haven't tested what happens if you inject more than 1 lasers.
