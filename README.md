@@ -35,6 +35,9 @@ If you want to use a discrete temporal-spatio profile (i.e. E = E(t,y)), set "us
 ## Known Issues:
 1. If not using profile customisation, a weird bug is causing EPOCH to input zero fields if the analytical expression is time-independent. For example, profile = gauss(time,2*femto,2*femto) works, but profile = 1 doesn't. It doesn't matter if you write anything about t_profile. If there is any time dependency in profile, EPOCH will work properly and multiply the profile with t_profile. 
 
+## A Better Abbreviation:
+AEPI(I) (Arbitrary EPOCH Profile Initialisation? Interface?) pronounced yippee
+
 ## Warnings
 1. I only modify the code for lasers attached to the x_min boundary, so please at this stage only try to inject a laser from the left boundary. Also, I actually haven't tested what happens if you inject more than 1 lasers.
 2. I use bilinear interpolation between the discrete points. Rigorous numerical testing is needed.
