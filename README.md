@@ -24,7 +24,7 @@ Subsequent: the $N_t \cross N_y$ matrix of laser amplitude, normalised to 1. Eac
 
 Warning: I actually forgot how I wrote the source code, so the matrix may need to be transposed. I really need to check this.
 
-### Step 2: Modify your input.deck
+### Step 2: Modifying your input.deck
 There are two newly-added logical flags that you need to specify in the laser block in input.deck. They are "use_custom_profile" and "use_spatiotemporal_profile". 
 If you wish to use a custom laser profile, set "use_custom_profile = T". The default is F. If the flag is set to F, you can set the profile in the usual way (by passing an analytical expression).
 
@@ -38,6 +38,7 @@ If you want to use a discrete temporal-spatio profile (i.e. E = E(t,y)), set "us
 ## Warnings
 1. I only modify the code for lasers attached to the x_min boundary, so please at this stage only try to inject a laser from the left boundary. Also, I actually haven't tested what happens if you inject more than 1 lasers.
 2. I use bilinear interpolation between the discrete points. Rigorous numerical testing is needed.
+3. The tutorial section, as of now, is a very drafted version and contains many error.
 
 ## Developer's Section
 TODO:
