@@ -1,6 +1,6 @@
 # AELP (Arbitrary EPOCH Laser Profile)
 
-## Newest Update (18/06)
+## Latest Update (18/06)
 I have uploaded my test cases (gaussian and uniform, mentioned in Issue 3) in tutorial/comparison.
 
 Have a look at the jupyter notebooks! You can see the results and run them yourself if you wish.
@@ -13,6 +13,9 @@ Also, a pyproject.toml was created. Now you can just create a virtual environmen
 In order to use the feature, you have to obtain my modified copy of EPOCH. You can do this by visiting [my fork on Github](https://github.com/ZheyuanChen/epoch_dev/tree/my-epoch-mods) or email me zheyuan.chen@york.ac.uk. If you choose the former, please download the branch "my-epoch-mods". This is VERY important as I don't think I keep the modification in the main branch. If you choose the latter, I will redirect you the the former, so you will use Github anyway.
 
 Upon obtaining a copy, you can compile it in the usual way. 
+
+## Installation
+If you already have a working virtual environment, you can go straight to Jupyter notebooks and play them yourself. If you wish to create a new venv for this project, you can download all required Python package by `uv pip install -e .` assuming you are at the top directory of this project and you use uv. 
 
 ## Feature introduction
 I have modified the source code such that you are able to initialise an arbitrary laser profile in **2D simulations**. The work in 3D is under planning and the work in 1D is never intended. 
