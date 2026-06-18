@@ -1,5 +1,14 @@
 # AELP (Arbitrary EPOCH Laser Profile)
 
+## Newest Update (18/06)
+I have uploaded my test cases (gaussian and uniform, mentioned in Issue 3) in tutorial/comparison.
+
+Have a look at the jupyter notebooks! You can see the results and run them yourself if you wish.
+
+Also, a pyproject.toml was created. Now you can just create a virtual environment and `uv pip install -e .` provided you use uv. Every Python package needed by this repo will then be downloaded, and you can go straight to the Jupyter Notebooks and run all.
+
+
+
 ## Obtaining a copy of modified EPOCH
 In order to use the feature, you have to obtain my modified copy of EPOCH. You can do this by visiting [my fork on Github](https://github.com/ZheyuanChen/epoch_dev/tree/my-epoch-mods) or email me zheyuan.chen@york.ac.uk. If you choose the former, please download the branch "my-epoch-mods". This is VERY important as I don't think I keep the modification in the main branch. If you choose the latter, I will redirect you the the former, so you will use Github anyway.
 
