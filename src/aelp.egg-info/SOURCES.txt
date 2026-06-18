@@ -1,0 +1,8 @@
+README.md
+pyproject.toml
+src/sdf_xarray_jupyter.py
+src/aelp.egg-info/PKG-INFO
+src/aelp.egg-info/SOURCES.txt
+src/aelp.egg-info/dependency_links.txt
+src/aelp.egg-info/requires.txt
+src/aelp.egg-info/top_level.txt

@@ -124,7 +124,7 @@ begin:output
   use_offset_grid = F
 
   # number of timesteps between output dumps
-  dt_snapshot = 5.0e-15
+  dt_snapshot = 15.0e-15
 
   # Number of dt_snapshot between full dumps
   full_dump_every = -1

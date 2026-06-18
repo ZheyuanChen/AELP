@@ -1,0 +1,13 @@
+[project]
+name = "aelp"
+version = "0.1.0"
+description = "Arbitrary EPOCH Laser Profile — tutorials and utilities for custom laser injection in EPOCH PIC simulations"
+requires-python = ">=3.10"
+
+dependencies = [
+    "numpy>=2.0",
+    "matplotlib>=3.8",
+    "xarray>=2024.1",
+    "scipy>=1.12",
+    "sdf-xarray[jupyter]>=0.7",
+]

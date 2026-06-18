@@ -4,7 +4,12 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 *.sdf
-
+*.dat
+!epoch2d.dat
+profile_check.png
+.venv#
+.ipynb_checkpoints/
+.claude/
 # User-specific files
 *.rsuser
 *.suo

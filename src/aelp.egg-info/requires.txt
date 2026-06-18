@@ -1,0 +1,5 @@
+numpy>=2.0
+matplotlib>=3.8
+xarray>=2024.1
+scipy>=1.12
+sdf-xarray[jupyter]>=0.7

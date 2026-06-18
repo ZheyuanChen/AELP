@@ -1,0 +1,181 @@
+
+
+begin:constant
+
+  lambda0 = 1.0 * micron
+  pulse_FWHM = 2 * micron
+  #pulse_tau = pulse_FWHM / (2*sqrt(log(2))) # FWHM to sigma
+  pulse_tau = 15 * femto # pulse duration (sigma)
+  
+  w_0 = pulse_FWHM / 1.665 # Beam waist size
+  #peak_power = pulse_energy / (pulse_tau * sqrt(pi))
+  #intens = peak_power / (1e4*pi*w_0^2) # 1e4 to convert from Wm^-2 to Wcm^-2
+  intens = 1e22 # Wcm^-2
+  a0 =  8.5e-4 * sqrt(intens * lambda0^2)
+
+  # Set the beam focus spot
+  pulse_defocus = 10 * micron # Distance from x_min to the beam focus spot
+  #x_spot = (-x_min) + pulse_defocus # Distance from x_min to spot
+  x_spot = pulse_defocus # Distance from x_min to spot
+
+
+  # These are the parameters calculated for driving the laser
+  # These should not need to be modified
+  x_R = pi * w_0^2 / lambda0 # Rayleigh range
+  RC = x_spot * (1.0 + (x_R/x_spot)^2) # Radius of curvature on x_min
+  w_bnd = w_0 * sqrt( 1.0 + (x_spot/x_R)^2) # Spot size at x_min
+  gouy = atan(x_spot/x_R) # Gouy phase shift at x_min
+end:constant
+
+begin:control
+
+  # global number of gridpoints
+  nx = 700   # in x (20 cells per wavelength)
+  ny = 500   # in y (must be even)
+
+  # maximum number of iterations
+  # set to -1 to run until finished
+  nsteps = -1
+
+  # final time of simulation
+  t_end = 200 * femto
+
+  # size of domain
+  x_min = -20 * micro
+  x_max = 15 * micro
+  y_min = -12.5 * micro
+  y_max = 12.5 * micro
+
+  dt_multiplier = 0.9
+
+  dlb_threshold = 0.8 # please go faster 
+
+  use_random_seed = T # The methodology has a small chance of repeating simulations if the calculated error is too high, use a random seed due to this.
+
+  stdout_frequency = 100 # calculated size of cells here
+
+end:control
+
+
+
+#begin:qed
+
+  # These are the parts that control the QED sections of EPOCH
+  #use_qed = T # Turn on or off QED. If you're normally running without QED then
+              # don't compile with -DPHOTONS
+
+  #qed_start_time = 0 # Time after which QED effects should start.
+  
+  #produce_photons = T # Should the code actually produce and track photons.
+                      # If F then the code calculates the recoil due to emitting
+                      # photons, but the photon is not tracked. qed must be on
+                      # to Ever produce photons
+
+  #photon_energy_min = 0.5 * mev # Minimum energy for a tracked photon. Photons
+                               # emitted with lower energy still cause electron
+                               # recoil but are not tracked
+
+  #produce_pairs = T # Whether or not to activate the module for pair production
+                    # by the Breit-Wheeler process. Both qed and
+                    # produce_photons must be on to produce pairs
+
+  #photon_dynamics = T # Quite often you're more interested in where photons are
+                      # generated than where they propagate to. This option
+                      # stops the core code from moving the photons.
+                      # This is also much faster.
+
+#end:qed
+
+begin:boundaries
+
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  
+  # !!! Potential issue here. 
+  intensity_w_cm2 = intens * (w_0 / w_bnd)^2 # Clause thinks there is a square here. Diana thinks otherwise
+
+  #intensity_w_cm2 = intens * w_0 / w_bnd
+  lambda = lambda0
+
+  phase = 2.0 * pi/ lambda0 * y^2 / (2.0 * RC) - gouy
+  pol = 0
+
+  # !!! To use the usual way to set up the profile, set the first flag below to F. To use customised (first flag below) spatio-temporal (second flag below) profile, set both flags to T
+  use_custom_profile = F
+  #use_spatiotemporal_profile = T
+  profile = gauss(y,0,w_bnd)
+  t_profile = gauss(time, 3*pulse_tau, pulse_tau)
+  t_start = 0
+  t_end = 6*pulse_tau
+end:laser
+
+
+begin:subset
+  name = Defect_Region
+  x_min = 10 * micron
+  x_max = 15 * micron
+  y_min = -7 * micron
+  y_max = 7 * micron
+end:subset
+
+
+begin:output
+
+  # If use_offset_grid is true then the code dumps a grid which displays
+  # positions relative to the left hand edge of the window
+  use_offset_grid = F
+
+  # number of timesteps between output dumps
+  dt_snapshot = 10.0e-15
+
+  # Number of dt_snapshot between full dumps
+  full_dump_every = -1
+  # restart_dump_every = -1
+  force_final_to_be_restartable = F
+  force_first_to_be_restartable = F
+
+  # Properties at particle positions
+  particles = never
+  px = never
+  py = never
+  pz = never
+  vx = never
+  vy = never
+  vz = never
+  charge = never
+  mass = never
+  particle_energy = never
+  particle_weight = never
+  species_id = never
+
+  # Properties on grid
+  grid = always
+  ex = always
+  ey = always + Defect_Region
+  ez = never
+  bx = never
+  by = never
+  bz = always
+  jx = never
+  jy = never
+  jz = never
+  ppc = never
+  ekbar = never
+  mass_density = never
+  charge_density = never
+  #number_density = always + species
+  temperature = never
+  poynt_flux = always
+  #distribution_functions = always
+  #particle_probes = always
+  total_energy_sum = always# + species
+  #absorption = always
+end:output
+

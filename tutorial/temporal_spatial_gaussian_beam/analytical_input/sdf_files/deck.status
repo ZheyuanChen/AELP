@@ -1,4 +1,4 @@
- EPOCH2D v4.20.1   v4.20.1-9-g285e99cc-dirty 1781533359.474            
+ EPOCH2D v4.20.1   v4.20.1-9-g285e99cc-dirty 1781600898.174            
 
 Deck state:  1
 
@@ -63,7 +63,7 @@ Deck state:  1
  Beginning "output" block
 
  	Element use_offset_grid=F handled OK
- 	Element dt_snapshot=5.0e-15 handled OK
+ 	Element dt_snapshot=15.0e-15 handled OK
  	Element full_dump_every=-1 handled OK
  	Element force_final_to_be_restartable=F handled OK
  	Element force_first_to_be_restartable=F handled OK
@@ -162,7 +162,7 @@ Deck state:  2
  Beginning "output" block
 
  	Element use_offset_grid=F handled OK
- 	Element dt_snapshot=5.0e-15 handled OK
+ 	Element dt_snapshot=15.0e-15 handled OK
  	Element full_dump_every=-1 handled OK
  	Element force_final_to_be_restartable=F handled OK
  	Element force_first_to_be_restartable=F handled OK
