@@ -7,7 +7,7 @@
 *.dat
 !epoch2d.dat
 profile_check.png
-.venv#
+.venv/
 .ipynb_checkpoints/
 .claude/
 # User-specific files
