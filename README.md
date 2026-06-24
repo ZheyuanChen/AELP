@@ -1,5 +1,10 @@
 # AELP (Arbitrary EPOCH Laser Profile)
 
+## THE Latest Update (24/06)
+EPOCH3d spatial profile ready to use. Spatial-temporal profile underconstruction. 
+LASY integration under construction.
+A potential overhaul on the file loader (changing from dat files to binary files or keeping both formats).
+
 ## Latest Update (19/06)
 Laser profile injection in EPOCH2d is stable and ready to use. Tests have been done and show good results.
 EPOCH3d modification is under construction.
@@ -40,17 +45,7 @@ On top of this, if you simply want to set a discrete spatial profile (i.e. E = E
 If you want to use a discrete temporal-spatio profile (i.e. E = E(t,y)), set "use_spatiotemporal_profile = T" and include a file named "temporal_spatial_profile.dat" in the same directory as your input.deck. 
 
 ## Known Issues:
-1. If not using profile customisation, a weird bug is causing EPOCH to input zero fields if the analytical expression is time-independent. For example, profile = gauss(time,2*femto,2*femto) works, but profile = 1 doesn't. It doesn't matter if you write anything about t_profile. If there is any time dependency in profile, EPOCH will work properly and multiply the profile with t_profile.
-
-I think the issue arises from how we declare the variable use_profile_function:
-Firstly, in the subroutine "init_laser" in laser.f90, the variable is declared FALSE. 
-In the function "laser_block_handle_element", it firstly calls "init_laser". Then, in the "profile" initialisation block, after initialising and tokenising the stack, it calls "laser_update_profile" and THEN set use_profile_function = TRUE if the profile function is time-varying. Otherwise, it deallocate the stack (the profile_funciton is no more).
-If we look closely at "laser_update_profile", it has a if statement, assigning fields to points IF use_profile_function. 
-Therefore, if the profile function is not time-varying, use_profile_function is FALSE at the point where EPOCH calls laser_update_profile, and EPOCH will not assign field on the boundary and do nothing. After this, since the profile is not time-varying, laser_block_handle_element deallocate the stack (i.e. clear the memory), and profile information is lost. 
-As a result, no field will be injected if no time-dependency in profile when a profile function is used. This also explains why t_profile or custom profile have no such issues: the former is to be multiplied with profile, whether or not it is customised, and the latter has a separate condition in laser_update_profile and is not affected by this logic flaw.
-Note that this logic flaw was introduced by me and is not present in the original EPOCH source code. It was intended for EPOCH to see if we want to use customised laser profile, but this side effect was introduced at the same time.
-
-The above issue is also raised in Github Issues.
+Moved to Issues
 
 ## A Better Abbreviation:
 AEPI(I) (Arbitrary EPOCH Profile Initialisation? Interface?) pronounced yippee
@@ -58,13 +53,10 @@ CELP (Customised/Customisation of/Customising EPOCH Laser Profile) pronounced in
 
 
 ## Warnings
-1. I only modify the code for lasers attached to the x_min boundary, so please at this stage only try to inject a laser from the left boundary. Also, I actually haven't tested what happens if you inject more than 1 lasers.
-2. I use bilinear interpolation between the discrete points. Rigorous numerical testing is needed.
-3. The tutorial section, as of now, is a very drafted version and contains many error.
+Not at the moment
 
 ## Developer's Section
 TODO:
 1. Maybe name things in a better and more consistent way.
-2. epoch3d
-3. All boundaries
-4. Testing
+2. epoch3d spatial-temporal profile
+3. LASY integration
