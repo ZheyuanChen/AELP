@@ -21,7 +21,7 @@ Upon obtaining a copy, you can compile it in the usual way.
 ## Installation
 If you already have a working virtual environment, you can go straight to Jupyter notebooks and play them yourself. If you wish to create a new venv for this project, you can download all required Python package by `uv pip install -e .` assuming you are at the top directory of this project and you use uv. 
 
-## Feature introduction
+## Feature introduction (OUTDATED -- Documentation Pending update)
 I have modified the source code such that you are able to initialise an arbitrary laser profile in **2D simulations**. The work in 3D is under planning and the work in 1D is never intended. 
 
 I think it's fairly simple to use. 
@@ -53,6 +53,7 @@ Moved to Issues
 
 ## A Better Abbreviation:
 AEPI(I) (Arbitrary EPOCH Profile Initialisation? Interface?) pronounced yippee
+
 CELP (Customised/Customisation of/Customising EPOCH Laser Profile) pronounced in a similar way as Celtics
 
 
