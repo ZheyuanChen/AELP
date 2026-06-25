@@ -1,4 +1,8 @@
 # AELP (Arbitrary EPOCH Laser Profile)
+## The Very Latest Update (25/06)
+Phase injection implemented and tested in 2D -- ready to use. 
+LASY integration in progress.
+3D implementation postponed.
 
 ## THE Latest Update (24/06)
 EPOCH3d spatial profile ready to use. Spatial-temporal profile underconstruction. 
