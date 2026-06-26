@@ -1,0 +1,5 @@
+case,max_abs_a0,max_abs_pct_peak,max_rel_pct,mean_rel_pct
+analytical built-in (sanity),7.5172e-04,0.0009,0.0121,0.0015
+LASY amp + deck phase (isolate amplitude),2.2979e-01,0.2697,1.9297,0.3225
+num amp + LASY phase (isolate phase),3.2725e-02,0.0384,0.6344,0.0598
+LASY amp + LASY phase (full LASY),2.3146e-01,0.2717,1.9777,0.3195

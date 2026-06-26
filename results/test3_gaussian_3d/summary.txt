@@ -1,0 +1,23 @@
+Test 3 (3D) - Analytical vs Numerical Gaussian beam (profile only)
+==================================================================
+
+3D counterpart of Test 1. Native gauss(y,0,w0)*gauss(z,0,w0) (w0 = 3 um) vs a
+2D (y,z) spatial profile injected from spatial_profile.dat. phase = 0.
+
+Reference  : analytical (native separable gauss)
+Comparison : numerical  (.dat 2D spatial injection)
+Peak |Ey|  : 8.4809 a0
+Snapshots  : 6
+
+Full-3D max |difference|      : 2.330599e-04 a0  (0.0027 % of peak)
+z=0 plane max relative diff   : 0.0095 %
+z=0 plane mean relative diff  : 0.0015 %
+
+Interpretation:
+  As in 2D, a small relative difference confirms the 3D custom injector
+  reproduces the native analytical Gaussian. The z-slice montage shows the
+  difference stays small across z (the beam's Gaussian z-structure is captured),
+  and the on-axis line cuts overlay pointwise.
+
+Figures in results/figures/: field_z0_t*.png, reldiff_z0_t*.png,
+lineout_axis_t*.png, zmontage.png
