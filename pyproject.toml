@@ -1,6 +1,6 @@
 [project]
 name = "aelp"
-version = "0.1.0"
+version = "0.1.1"
 description = "Arbitrary EPOCH Laser Profile — tutorials and utilities for custom laser injection in EPOCH PIC simulations"
 requires-python = ">=3.10"
 
