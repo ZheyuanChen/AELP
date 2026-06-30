@@ -1,4 +1,11 @@
 # AELP (Arbitrary EPOCH Laser Profile)
+
+## Update (30/06)
+File format overhaul -- stick to EPOCH's convention (binary files)
+Several bug fixing
+Reformating epoch-mod to conform to EPOCH's coding style requirements
+Warning: due to the file format change, every input.deck and .dat files written before 30/06 won't work
+
 ## The Very Latest Update (25/06)
 Phase injection implemented and tested in 2D -- ready to use. 
 LASY integration in progress.
