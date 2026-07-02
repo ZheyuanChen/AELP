@@ -381,16 +381,22 @@ is the same design, built in from the start.)
 - **epoch1d** has no custom-profile support.
 - All file grids must be **uniform**; non-uniform coordinate axes are not
   supported.
-- Memory: in **3D**, each MPI rank stores only the slab of the
+- Memory: in **3D**, each MPI rank *can* store only the slab of the
   spatiotemporal array covering its own patch of the laser boundary
-  (plus a one-cell margin); ranks that do not own the laser's boundary
-  face store nothing, and loading streams the file one time-slice at a
-  time, so no rank ever holds the full 3D array. Per-rank cost is
-  roughly `(local patch fraction) * n_tr1 * n_tr2 * n_t * 8` bytes. Two
-  fallbacks store the full plane on boundary ranks: dynamic load
-  balancing, and a moving window when the laser is on a `y`/`z` boundary
-  (both make the local patch time-dependent). In **2D** the (small) full
-  array is still broadcast to every rank.
+  (plus a one-cell margin) rather than the full plane, with loading
+  streamed one time-slice at a time. This only activates when the
+  domain decomposition is guaranteed static for the whole run — set
+  **both** `use_balance = F` and `use_pre_balance = F` in the `control`
+  block. `use_pre_balance` defaults to `T` in epoch3d, so **by default
+  every boundary-owning rank stores the full plane** (the windowed slab
+  is skipped): EPOCH's own one-off startup load balance redistributes
+  cell ownership between ranks based on particle load *after* the laser
+  file is loaded, and would otherwise invalidate an already-sized
+  window. With both flags off, per-rank cost is roughly
+  `(local patch fraction) * n_tr1 * n_tr2 * n_t * 8` bytes; a moving
+  window on a `y`/`z`-boundary laser also forces the full-plane
+  fallback (its tr1 axis is x, which the window shifts). In **2D** the
+  (small) full array is always broadcast to every rank.
 - The 3D implementation (epoch_dev `v2.1.0`) has been verified
   functionally (loading, axis-ordering, error paths); a quantitative
   field-level benchmark in 3D (matching the 2D LASY validation) has not
