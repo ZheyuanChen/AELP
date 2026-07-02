@@ -1,9 +1,10 @@
 # Custom Laser Profile Block
 
 This document describes the modifications made to EPOCH's `laser` block to
-support loading arbitrary laser amplitude and phase profiles from raw binary
-data files. See the [EPOCH documentation](https://epochpic.github.io/) for
-the standard `laser` block parameters that are not covered here.
+support loading arbitrary laser amplitude and phase profiles from [raw binary
+data files](https://epochpic.github.io/documentation/input_deck/binary_files.html). 
+See the [EPOCH documentation](https://epochpic.github.io/documentation/input_deck/input_deck_laser.html) 
+for the standard `laser` block parameters that are not covered here.
 
 The custom profile injection feature allows a laser field of the form
 `E = A · sin(ωt + φ)` — with `A` and `φ` arbitrary functions of the
@@ -12,7 +13,8 @@ entirely from externally generated data files, bypassing EPOCH's built-in
 analytic profile functions. This is particularly useful when interfacing
 with external beam propagation codes such as
 [LASY](https://github.com/LASY-org/lasy), or when the target profile cannot
-be expressed as one of EPOCH's analytic primitives.
+be expressed as one of EPOCH's analytic primitives. A Python wrapper for LASY 
+written by the same author can be found [here](https://github.com/ZheyuanChen/AELP/tree/main)
 
 The feature is implemented in **epoch2d** (released as epoch_dev `v2.0.0`)
 and **epoch3d** (released as epoch_dev `v2.1.0`). epoch1d is unmodified.
@@ -374,11 +376,16 @@ is the same design, built in from the start.)
   are binary.
 - All file grids must be **uniform**; non-uniform coordinate axes are not
   supported.
-- The whole data array is **broadcast to every MPI rank**. For large 3D
-  spatiotemporal profiles the memory cost is
-  `n_tr1 * n_tr2 * n_t * 8` bytes per rank (per laser), which can become
-  significant for finely sampled tightly-focused pulses — check it against
-  the per-node memory budget before scaling up.
+- Memory: in **3D**, each MPI rank stores only the slab of the
+  spatiotemporal array covering its own patch of the laser boundary
+  (plus a one-cell margin); ranks that do not own the laser's boundary
+  face store nothing, and loading streams the file one time-slice at a
+  time, so no rank ever holds the full 3D array. Per-rank cost is
+  roughly `(local patch fraction) * n_tr1 * n_tr2 * n_t * 8` bytes. Two
+  fallbacks store the full plane on boundary ranks: dynamic load
+  balancing, and a moving window when the laser is on a `y`/`z` boundary
+  (both make the local patch time-dependent). In **2D** the (small) full
+  array is still broadcast to every rank.
 - The 3D implementation (epoch_dev `v2.1.0`) has been verified
   functionally (loading, axis-ordering, error paths); a quantitative
   field-level benchmark in 3D (matching the 2D LASY validation) has not
