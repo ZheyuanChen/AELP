@@ -71,10 +71,13 @@ to activate any of the parameters below. The default is `F`, which leaves
 all standard EPOCH profile behaviour unchanged.
 
 `use_spatiotemporal_profile` — When `T`, the full two-dimensional
-`A(y, t)` amplitude is read from a raw binary file. When `F`, a
-one-dimensional static spatial profile `A(y)` is used instead (in epoch2d
-this legacy path still reads the old **text** format of coordinate–value
-pairs, not binary). Defaults to `T` in epoch2d.
+`A(y, t)` amplitude is read from a raw binary file and re-interpolated at
+every time step. When `F`, a one-dimensional static spatial profile
+`A(y)` is read (also raw binary) and interpolated onto the boundary once
+at start-up; the temporal envelope is then set analytically via
+`t_profile`. Defaults to `T` in epoch2d. (The static path's legacy text
+format of coordinate–value pairs — used up to and including `v2.1.0` —
+is no longer supported.)
 
 `profile_data_file` — Path to the amplitude file. Relative paths resolve
 from the deck's data directory; absolute paths are used as-is. Defaults to
@@ -85,26 +88,28 @@ from the deck's data directory; absolute paths are used as-is. Defaults to
 Mandatory when `use_spatiotemporal_profile = T`.
 
 `n_transverse_points` / `n_y` — Number of transverse spatial points in the
-profile array. Mandatory when `use_spatiotemporal_profile = T`.
+profile array (>= 2). Mandatory whenever `use_custom_profile = T` (both
+modes).
 
 `profile_transverse_min` / `y_min` — Minimum transverse coordinate of the
-profile grid (metres). Mandatory when `use_spatiotemporal_profile = T`.
+profile grid (metres). Mandatory whenever `use_custom_profile = T`.
 (For a laser on `y_min`/`y_max` the transverse axis is physically `x`; the
 `y_min` alias name is kept for backward compatibility, but the
 boundary-agnostic `profile_transverse_min` reads better there.)
 
 `profile_transverse_max` / `y_max` — Maximum transverse coordinate of the
-profile grid (metres). Mandatory when `use_spatiotemporal_profile = T`.
+profile grid (metres). Mandatory whenever `use_custom_profile = T`.
 
 `t_start`, `t_end` — Start and end times of the profile grid (seconds).
 These reuse EPOCH's standard laser elements; the profile time axis runs
 from `t_start` to `t_end` with `n_t` uniformly spaced points. Outside this
 window the laser is inactive.
 
-`use_phase_from_file` — When `T`, the phase `φ(y, t)` is also read from
-file each time step. Any `phase = ...` expression in the deck is ignored.
-Defaults to `F`, in which case the phase is set as normal via the `phase`
-deck element.
+`use_phase_from_file` — When `T`, the phase is also read from file: on
+the spatiotemporal path `φ(y, t)` is re-interpolated each time step; on
+the static path `φ(y)` is interpolated once at start-up. Any
+`phase = ...` expression in the deck is ignored. Defaults to `F`, in
+which case the phase is set as normal via the `phase` deck element.
 
 `phase_data_file` — Path to the raw binary phase file (radians). Follows
 the same path resolution as `profile_data_file`. The phase file must lie on
@@ -197,10 +202,10 @@ naturally. Naming the propagation axis (e.g. `n_x_points` on an `x_min`
 laser) is an error — EPOCH reports the offending element and line and
 suggests the transverse or boundary-agnostic names.
 
-Unlike epoch2d, the epoch3d **static spatial path also uses the raw binary
-format** (the pre-`v2.1.0` text format with embedded coordinates is no
-longer read), and supports `use_phase_from_file`: the phase plane is
-interpolated onto the boundary once at start-up alongside the amplitude.
+As in epoch2d, the static spatial path uses the raw binary format (the
+pre-`v2.1.0` text format with embedded coordinates is no longer read) and
+supports `use_phase_from_file`: the phase plane is interpolated onto the
+boundary once at start-up alongside the amplitude.
 
 ## File Format
 
@@ -218,6 +223,7 @@ column-major order:
 
 - **2D spatiotemporal** `A(y, t)`: transverse `y` fastest-varying, time
   slowest. `n_y * n_t` values.
+- **2D static spatial** `A(y)`: a single line of `n_y` values.
 - **3D spatiotemporal** `A(tr1, tr2, t)`: tr1 fastest-varying, then tr2,
   time slowest. `n_tr1 * n_tr2 * n_t` values.
 - **3D static spatial** `A(tr1, tr2)`: tr1 fastest-varying. `n_tr1 * n_tr2`
@@ -229,12 +235,13 @@ values should be normalised to the range `[0, 1]`; EPOCH multiplies by the
 peak field derived from `intensity_w_cm2` (or `amp`). Phase values are in
 radians and are used directly — EPOCH adds no constant offset.
 
-Interpolation is bilinear (2D) or trilinear (3D spatiotemporal) between
-grid points. On the spatiotemporal path, positions outside the declared
-transverse bounds return **zero** amplitude and phase; on the 3D static
-spatial path, positions outside the plane are **clamped** to the edge
-values. In either case the profile grid should comfortably cover the
-boundary region the laser is meant to illuminate.
+Interpolation is linear in every axis (bilinear for 2D spatiotemporal
+and 3D static, trilinear for 3D spatiotemporal). On the spatiotemporal
+path, positions outside the declared transverse bounds return **zero**
+amplitude and phase; on the static paths, positions outside the file
+grid are **clamped** to the edge values. In either case the profile grid
+should comfortably cover the boundary region the laser is meant to
+illuminate.
 
 ### Python generators
 
@@ -245,6 +252,7 @@ default C (row-major) order with the axes reversed, written with
 | File | NumPy shape (C order) |
 |------|----------------------|
 | 2D spatiotemporal | `(n_t, n_y)` |
+| 2D static spatial | `(n_y,)` |
 | 3D spatiotemporal | `(n_t, n_tr2, n_tr1)` |
 | 3D static spatial | `(n_tr2, n_tr1)` |
 
@@ -371,9 +379,6 @@ is the same design, built in from the start.)
 ## Current Limitations
 
 - **epoch1d** has no custom-profile support.
-- The **epoch2d static spatial path** (`use_spatiotemporal_profile = F`)
-  still reads the legacy 1D text format, not binary. In epoch3d both paths
-  are binary.
 - All file grids must be **uniform**; non-uniform coordinate axes are not
   supported.
 - Memory: in **3D**, each MPI rank stores only the slab of the
