@@ -1,0 +1,57 @@
+# =====================================================================
+# Test A (2D) -- injector isolation, cell 2/3: AMPLITUDE from file, phase
+# native. Generate the file first: python ../generate_profile.py
+# =====================================================================
+
+begin:control
+  nx = 434
+  ny = 451
+
+  x_min = 0
+  x_max = 1.809557368467721e-5
+  y_min = -9.391485505499118e-6
+  y_max =  9.391485505499118e-6
+
+  t_end = 350 * femto
+  stdout_frequency = 50
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+end:boundaries
+
+begin:constant
+  phase_const  = 1.0172219678978514
+  phase_quad   = 277777777777.77783
+end:constant
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = F
+  profile_data_file = spatial_profile.dat
+  n_y = 1200
+  y_min = -9.391485505499118e-6
+  y_max =  9.391485505499118e-6
+
+  phase = phase_const + phase_quad*(y*y)
+
+  t_profile = gauss(time, 200 * femto, 80 * femto)
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 25 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output
