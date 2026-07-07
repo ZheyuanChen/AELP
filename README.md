@@ -24,7 +24,7 @@ rather than in this README.
 ## Getting the modified EPOCH
 
 Clone [epoch_dev](https://github.com/ZheyuanChen/epoch_dev) and check out
-the `my-epoch-mods` branch (this is the actively developed branch — the
+the `upstream-pr-custom-laser-injection` branch (this is the branch sent to official EPOCH repo for a PR — the
 modification is **not** on `main`). Build it in the usual way
 (`make COMPILER=gfortran` from `epoch2d/` or `epoch3d/`). Once the pending
 pull request is merged upstream, this step will no longer be necessary.
