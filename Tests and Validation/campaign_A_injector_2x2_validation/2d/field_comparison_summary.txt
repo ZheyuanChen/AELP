@@ -1,0 +1,15 @@
+Test A (2D) -- field comparison: analytical (native deck) vs numerical (file-injected)
+========================================================================================
+Reference  : amp_deck_phase_deck (Analytical (native deck))
+Comparison : amp_file_phase_file (Numerical (file-injected))
+Peak |Ey|  : 1.4718 a0
+Snapshots  : 15
+
+Overall metrics (vs analytical reference):
+  max |difference|         : 1.619112e-05 a0
+  max |difference| / peak  : 0.001100 %
+  max relative difference  : 0.015622 %
+  mean relative difference : 0.001098 %
+
+Animation: /mnt/scratch/users/pnd531/project_epoch/lasers_in_epoch/Viking_tests_new/injector_2x2_validation/2d/results/animations/field_comparison.mp4
+Screenshots: field_comparison_t*.png in results/figures/

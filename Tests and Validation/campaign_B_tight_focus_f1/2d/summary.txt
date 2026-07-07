@@ -1,0 +1,27 @@
+Test B (2D) -- LASY vs paraxial closed-form, f/1 tight-focusing demo
+======================================================================
+Beam: lambda0=1.000um f/1.0 NA=0.5000
+(1D-transverse slab, HALF Gouy phase -- see physics_params.py).
+Paraxial theory: x_focus=5.0930um  w0=0.6366um
+
+Snapshot timing: ideal t_peak@focus = 56.988 fs, but
+output only exists every dt_snapshot -- bracketing snapshots at
+50.1 fs and 60.0 fs
+(interpolation fraction 0.697). x_focus/w0 below use the
+fitted w(x) curve LINEARLY INTERPOLATED between those two snapshots to
+the exact ideal time (not the raw field -- see analyse_cell's comment).
+Old method (snap to nearest snapshot, t=60.0 fs)
+numbers included alongside for comparison.
+
+x_focus / w0 per cell:
+  paraxial  : x_focus=  4.5492um (vs theory +0.5437um)  w0= 0.6867um (vs theory +7.86%)
+              nearest-snapshot was: x_focus=  4.5368um (vs theory +0.5562um)  w0= 0.6705um (vs theory +5.32%)
+  lasy      : x_focus=  5.1156um (vs theory +0.0226um)  w0= 0.6875um (vs theory +8.00%)
+              nearest-snapshot was: x_focus=  5.1207um (vs theory +0.0278um)  w0= 0.6885um (vs theory +8.15%)
+
+w(x) RMS relative difference, paraxial vs LASY (over the interior valid
+range) = 10.020%
+This is the key Test B number: how much the closed-form paraxial formula
+diverges from LASY's genuine non-paraxial propagation at NA=0.5 -- a large
+value here indicates the paraxial approximation is breaking down at this
+f-number, as expected going in.

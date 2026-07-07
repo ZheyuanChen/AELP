@@ -1,0 +1,63 @@
+# =====================================================================
+# Test B (2D) -- f/1 tight-focusing demo: PARAXIAL closed-form via injector
+# ---------------------------------------------------------------------
+# Same geometry/grid as ../lasy/, but amplitude+phase come from the
+# closed-form paraxial Gaussian-beam formula instead of LASY's angular-
+# spectrum propagation -- "what naive paraxial optics predicts" at f/1
+# (NA=0.5), where the paraxial approximation is known to be unreliable
+# (see the 30 June session's array-level findings, dev_test/laser_
+# profile_injection/tight_focusing_f1/results/summary.txt).
+# Generate the files first: python ../generate_paraxial.py
+# =====================================================================
+
+begin:control
+  nx = 326
+  ny = 672
+
+  x_min = 0
+  x_max = 1.01859163578813e-5
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+
+  t_end = 150 * femto
+  stdout_frequency = 100
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = spatial_profile.dat
+
+  use_phase_from_file = T
+  phase_data_file = phase_profile.dat
+
+  n_y = 1600
+  n_t = 500
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+  t_start = 0
+  t_end = 9e-14
+
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 10 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output

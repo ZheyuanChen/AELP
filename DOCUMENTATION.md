@@ -384,19 +384,18 @@ is the same design, built in from the start.)
 - Memory: in **3D**, each MPI rank *can* store only the slab of the
   spatiotemporal array covering its own patch of the laser boundary
   (plus a one-cell margin) rather than the full plane, with loading
-  streamed one time-slice at a time. This only activates when the
-  domain decomposition is guaranteed static for the whole run — set
-  **both** `use_balance = F` and `use_pre_balance = F` in the `control`
-  block. `use_pre_balance` defaults to `T` in epoch3d, so **by default
-  every boundary-owning rank stores the full plane** (the windowed slab
-  is skipped): EPOCH's own one-off startup load balance redistributes
-  cell ownership between ranks based on particle load *after* the laser
-  file is loaded, and would otherwise invalidate an already-sized
-  window. With both flags off, per-rank cost is roughly
-  `(local patch fraction) * n_tr1 * n_tr2 * n_t * 8` bytes; a moving
-  window on a `y`/`z`-boundary laser also forces the full-plane
-  fallback (its tr1 axis is x, which the window shifts). In **2D** the
-  (small) full array is always broadcast to every rank.
+  streamed one time-slice at a time. This is now the default behaviour
+  for a static domain decomposition: `use_pre_balance` defaults to `T`
+  in epoch3d and triggers a one-off startup load balance that can move
+  a rank's local patch, so the file load for a spatiotemporal laser is
+  deferred past that rebalance and windowed against the *settled*
+  domain instead of being sized too early. Per-rank cost is then
+  roughly `(local patch fraction) * n_tr1 * n_tr2 * n_t * 8` bytes. The
+  full plane is still stored on every rank when the domain cannot be
+  considered static: `use_balance = T` (dynamic load balancing keeps
+  redistributing cells for the whole run) or a moving window on a
+  `y`/`z`-boundary laser (its tr1 axis is x, which the window shifts).
+  In **2D** the (small) full array is always broadcast to every rank.
 - The 3D implementation (epoch_dev `v2.1.0`) has been verified
   functionally (loading, axis-ordering, error paths); a quantitative
   field-level benchmark in 3D (matching the 2D LASY validation) has not

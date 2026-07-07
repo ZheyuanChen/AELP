@@ -1,0 +1,23 @@
+Test B (3D) -- LASY vs paraxial closed-form, f/1 tight-focusing demo (full resolution)
+==========================================================================================
+Theory: x_focus=5.0930um  w0=0.6366um  (f/1.0, NA=0.5000)
+
+Snapshot timing: ideal t_peak@focus = 56.988 fs, but
+output only exists every dt_snapshot -- bracketing snapshots at
+50.0 fs and 60.0 fs
+(interpolation fraction 0.696). x_focus/w0 below use the
+fitted w(x) curve LINEARLY INTERPOLATED between those two snapshots to
+the exact ideal time (not the raw field -- see analyse_cell's comment).
+Old method (snap to nearest snapshot, t=60.0 fs)
+numbers included alongside for comparison.
+
+paraxial  : x_focus=  4.3541um (vs theory +0.7389um)  w0= 0.6787um (vs theory +6.61%)
+            nearest-snapshot was: x_focus=  4.3319um (vs theory +0.7610um)  w0= 0.6629um (vs theory +4.12%)
+lasy      : x_focus=  5.0946um (vs theory +0.0017um)  w0= 0.6428um (vs theory +0.96%)
+            nearest-snapshot was: x_focus=  5.1003um (vs theory +0.0074um)  w0= 0.6431um (vs theory +1.02%)
+
+w(x) RMS relative difference, paraxial vs LASY (over the interior valid
+range) = 14.704%
+This is the key Test B number: how much the closed-form paraxial formula
+diverges from LASY's genuine non-paraxial propagation at NA=0.5, at full
+(not coarse smoke-test) resolution.

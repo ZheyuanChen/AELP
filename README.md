@@ -1,74 +1,75 @@
 # AELP (Arbitrary EPOCH Laser Profile)
 
-## Update (30/06)
-File format overhaul -- stick to EPOCH's convention (binary files)
-Several bug fixing
-Reformating epoch-mod to conform to EPOCH's coding style requirements
-Warning: due to the file format change, every input.deck and .dat files written before 30/06 won't work
+Tutorials, validation tests, and utilities for a custom laser injection
+feature added to the [EPOCH](https://github.com/epochpic/epoch) PIC code:
+loading a laser's amplitude and (optionally) phase profile from an external
+raw binary data file, instead of specifying it as an analytic deck
+expression. This lets a laser profile come from an external beam
+propagation tool (e.g. [LASY](https://github.com/LASY-org/lasy)) or from
+any shape that isn't one of EPOCH's built-in analytic primitives.
 
-## The Very Latest Update (25/06)
-Phase injection implemented and tested in 2D -- ready to use. 
-LASY integration in progress.
-3D implementation postponed.
+The EPOCH-side modification lives in a separate repository,
+[epoch_dev](https://github.com/ZheyuanChen/epoch_dev); this repository is
+where it gets tested, validated, and documented for end users.
 
-## THE Latest Update (24/06)
-EPOCH3d spatial profile ready to use. Spatial-temporal profile underconstruction. 
-LASY integration under construction.
-A potential overhaul on the file loader (changing from dat files to binary files or keeping both formats).
+## Status
 
-## Latest Update (19/06)
-Laser profile injection in EPOCH2d is stable and ready to use. Tests have been done and show good results.
-EPOCH3d modification is under construction.
+Implemented and validated in both **epoch2d** and **epoch3d** (epoch1d is
+unmodified). A pull request to merge this upstream into EPOCH is in
+preparation. For the full, current, session-by-session history see the
+[Issues](https://github.com/ZheyuanChen/AELP/issues) tab of this repo,
+which is where day-to-day development notes and bug reports now live
+rather than in this README.
 
-## Obtaining a copy of modified EPOCH
-In order to use the feature, you have to obtain my modified copy of EPOCH. You can do this by visiting [my fork on Github](https://github.com/ZheyuanChen/epoch_dev/tree/my-epoch-mods) or email me zheyuan.chen@york.ac.uk. If you choose the former, please download the branch "my-epoch-mods". This is VERY important as I don't think I keep the modification in the main branch. If you choose the latter, I will redirect you the the former, so you will use Github anyway.
+## Getting the modified EPOCH
 
-Upon obtaining a copy, you can compile it in the usual way. 
+Clone [epoch_dev](https://github.com/ZheyuanChen/epoch_dev) and check out
+the `my-epoch-mods` branch (this is the actively developed branch — the
+modification is **not** on `main`). Build it in the usual way
+(`make COMPILER=gfortran` from `epoch2d/` or `epoch3d/`). Once the pending
+pull request is merged upstream, this step will no longer be necessary.
 
 ## Installation
-If you already have a working virtual environment, you can go straight to Jupyter notebooks and play them yourself. If you wish to create a new venv for this project, you can download all required Python package by `uv pip install -e .` assuming you are at the top directory of this project and you use uv. 
 
-## Feature introduction (OUTDATED -- Documentation Pending update)
-I have modified the source code such that you are able to initialise an arbitrary laser profile in **2D simulations**. The work in 3D is under planning and the work in 1D is never intended. 
+If you already have a working Python environment, you can go straight to
+the tutorial notebooks. Otherwise, from the top of this repository:
 
-I think it's fairly simple to use. 
+```
+uv pip install -e .
+```
 
-### Step 1: Generating a laser profile
-You have three options to initialise a laser profile.
-1. The usual way: in this case the only thing you need to do is add a line "use_custom_profile = F" in your laser block and proceed as usual.
-2. Use a customised file specifiying the spatial profile only: you need to generate a file named "spatial_profile.dat". In the first line you need to write the total number of points (e.g. 500). In the following lines, you write the spatial coordinate (in metres) and the laser amplitude (normalised to 1), separate by a space (e.g. -10.0e-6 0.5). Note that you can still pass an analytical function as the temporal profile using the usual way (t_profile = gauss(.,.,.) for example)
-3. Use an array specifying the temporal-spatial profile: yuo need to generate a file named "temporal_spatial_profile.dat". See below for its format as it's a little bit complicated.
+(or `pip install -e .` if you don't use `uv`).
 
-The format of the file "temporal_spatial_profile.dat": 
-First line: $N_t$ $N_y$ # the number of points along t and y. Note that I haven't enabled EPOCH to accept an injection on x-boundaries nor multiple laser beams.
-Second line: y-coordinates
-Third line: t-coordinates
-Subsequent: the $N_t \cross N_y$ matrix of laser amplitude, normalised to 1. Each row represents a time slice, containing all y-coordinates.
+## Documentation
 
-Warning: I actually forgot how I wrote the source code, so the matrix may need to be transposed. I really need to check this.
+[DOCUMENTATION.md](DOCUMENTATION.md) is the full reference: deck elements
+for both epoch2d and epoch3d, the binary file format and axis ordering,
+the phase sign convention (including the LASY conversion), two-channel
+polarisation, and current limitations. Read that before writing a profile
+generator — the array-ordering convention in particular is easy to get
+backwards silently.
 
-### Step 2: Modifying your input.deck
-There are two newly-added logical flags that you need to specify in the laser block in input.deck. They are "use_custom_profile" and "use_spatiotemporal_profile". 
-If you wish to use a custom laser profile, set "use_custom_profile = T". The default is F. If the flag is set to F, you can set the profile in the usual way (by passing an analytical expression).
+## Repository layout
 
-On top of this, if you simply want to set a discrete spatial profile (i.e. E = E(y)), set "use_spatiotemporal_profile = F". The default is T. In this case, you need to include a file named "spatial_profile.dat" in the same directory as your input.deck. Note that I use and have only tested the "USE_DATA_DIRECTORY" method for running EPOCH (i.e. create a file named USE_DATA_DIRECTORY in epoch/epoch2d containing the input.deck's directory and call EPOCH without passing any directory). 
+- `tutorial/` — worked examples and Jupyter notebooks comparing the
+  custom-profile injection against EPOCH's analytic laser profiles.
+- `Viking_results/` — HPC validation campaigns (LASY-vs-paraxial
+  comparisons, memory/load-balancing tests, etc.) and their analysis
+  notebooks.
+- `src/` — shared Python utilities (currently an `sdf-xarray` helper for
+  loading EPOCH output in Jupyter).
 
-If you want to use a discrete temporal-spatio profile (i.e. E = E(t,y)), set "use_spatiotemporal_profile = T" and include a file named "temporal_spatial_profile.dat" in the same directory as your input.deck. 
+## LASY integration
 
-## Known Issues:
-Moved to Issues
+Several of the tests under `tutorial/` and `Viking_results/` drive EPOCH
+directly from a [LASY](https://github.com/LASY-org/lasy)-generated beam,
+including the amplitude/phase extraction and the LASY-to-EPOCH phase
+convention conversion documented in `DOCUMENTATION.md`. This is not yet
+packaged as a standalone, reusable wrapper — each test script currently
+does its own LASY setup — but the conversion logic itself is stable and
+validated (see the phase convention section of the documentation).
 
-## A Better Abbreviation:
-AEPI(I) (Arbitrary EPOCH Profile Initialisation? Interface?) pronounced yippee
+## Known issues
 
-CELP (Customised/Customisation of/Customising EPOCH Laser Profile) pronounced in a similar way as Celtics
-
-
-## Warnings
-Not at the moment
-
-## Developer's Section
-TODO:
-1. Maybe name things in a better and more consistent way.
-2. epoch3d spatial-temporal profile
-3. LASY integration
+Tracked in this repo's [Issues](https://github.com/ZheyuanChen/AELP/issues),
+not here.

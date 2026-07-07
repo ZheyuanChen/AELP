@@ -1,0 +1,11 @@
+Test B (3D) smoke test -- coarse-resolution sanity check
+=========================================================
+Theory: x_focus=5.0930um  w0=0.6366um  (f/1.0, NA=0.5000)
+Snapshot analysed: nearest t_peak_at_focus=56.99fs
+
+paraxial  : x_focus=  4.1693um (err 0.9237um)  w0= 0.6663um (err   4.66%)  t=60.13fs  CONVERGES (minimum found)
+lasy      : x_focus=  4.9290um (err 0.1640um)  w0= 0.6668um (err   4.73%)  t=60.13fs  CONVERGES (minimum found)
+
+PASS criterion (coarse smoke test, not final precision): both cells show a
+genuine w(x) minimum (not monotonic increase/divergence) landing within
+~10-20% of theory x_focus/w0 at this coarse resolution.

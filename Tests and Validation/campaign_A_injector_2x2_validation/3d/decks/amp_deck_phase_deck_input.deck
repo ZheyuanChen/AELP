@@ -1,0 +1,64 @@
+# =====================================================================
+# Test A (3D) -- injector isolation, cell 1/3: BASELINE (fully native)
+# ---------------------------------------------------------------------
+# Amplitude AND phase both via EPOCH's native deck expressions -- ground
+# truth for the other two cells (amp_file_phase_deck, amp_file_phase_file)
+# in this chain. See ../README.md for why this is a 3-cell chain, not a
+# full 2x2 (amp_deck_phase_file is architecturally unreachable).
+# Physics: physics_params.py in the parent dir. Same beam as
+# Viking_results/3D/test1_converging_gaussian (moderate NA~0.265,
+# deliberately NOT f/1 -- this validates the pipeline, not paraxial theory).
+# =====================================================================
+
+begin:control
+  nx = 434
+  ny = 451
+  nz = 451
+
+  x_min = 0
+  x_max = 1.809557368467721e-5
+  y_min = -9.391485505499118e-6
+  y_max =  9.391485505499118e-6
+  z_min = -9.391485505499118e-6
+  z_max =  9.391485505499118e-6
+
+  t_end = 350 * femto
+  stdout_frequency = 50
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+  bc_z_min = open
+  bc_z_max = open
+end:boundaries
+
+begin:constant
+  w_bnd        = 2.6832815729997478e-6
+  phase_const  = 0.46364760900080615
+  phase_quad   = 277777777777.77783
+end:constant
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  profile = gauss(r_yz, 0, w_bnd)
+  phase = phase_const + phase_quad*(r_yz*r_yz)
+
+  t_profile = gauss(time, 200 * femto, 80 * femto)
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 25 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output

@@ -1,0 +1,25 @@
+Test A (2D) -- injector 2x2 (3-cell) isolation
+================================================
+Beam: lambda0=1.000um w0=1.200um NA~0.2653
+(1D-transverse slab, HALF Gouy phase -- see physics_params.py).
+
+Snapshot timing: ideal t_peak@focus = 230.180 fs, but
+output only exists every dt_snapshot -- bracketing snapshots at
+225.0 fs and 250.1 fs
+(interpolation fraction 0.206). x_focus/w0 below use the
+fitted w(x) curve LINEARLY INTERPOLATED between those two snapshots to
+the exact ideal time (not the raw field, which oscillates too fast per
+dt_snapshot for linear interpolation to be valid -- see analyse_cell's
+docstring comment). Old method (snap to nearest snapshot,
+t=225.0 fs) numbers included alongside for
+comparison, to show how much this quantisation correction moves things.
+
+x_focus / w0 per cell (theory: x_focus=9.0478um, w0=1.2000um):
+  amp_deck_phase_deck   : x_focus=  8.723044um  w0= 1.212861um   (nearest-snapshot was: x_focus=  8.723352um  w0= 1.213881um)
+  amp_file_phase_deck   : x_focus=  8.723065um  w0= 1.212857um   (nearest-snapshot was: x_focus=  8.723371um  w0= 1.213877um)
+  amp_file_phase_file   : x_focus=  8.723063um  w0= 1.212857um   (nearest-snapshot was: x_focus=  8.723371um  w0= 1.213877um)
+
+w(x) RMS relative error:
+  amplitude-injector-only    = 5.969e-04%
+  phase-injector-additional  = 4.101e-04%
+  total                      = 4.486e-04%

@@ -1,0 +1,90 @@
+# =====================================================================
+# Test 2 (3D) -- two-channel polarisation independence, rigorous/Viking
+# ---------------------------------------------------------------------
+# Two x_min laser blocks, pol_angle 0 and pi/2, spatiotemporal binary
+# files with the SAME grid size (320x320x3) but DIFFERENT content --
+# repeats the exact recipe that caught a real per-laser-storage bug in
+# epoch2d (see generate_profiles.py docstring). Generate the files first:
+#   python generate_profiles.py
+#
+# Laser A (pol_angle=0)    -> expected to appear in Ey only.
+# Laser B (pol_angle=pi/2) -> expected to appear in Ez only.
+# If per-laser storage has regressed, Ez would show laser A's shape
+# instead of laser B's (silent wrong answer, not a crash).
+# =====================================================================
+
+begin:control
+  nx = 480
+  ny = 480
+  nz = 480
+
+  x_min = -8 * micron
+  x_max =  8 * micron
+  y_min = -8 * micron
+  y_max =  8 * micron
+  z_min = -8 * micron
+  z_max =  8 * micron
+
+  t_end = 30 * femto
+  stdout_frequency = 100
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+  bc_z_min = open
+  bc_z_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  id = 1
+  lambda = 1.0 * micron
+  amp = 2.0e12
+  pol_angle = 0.0
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = profile_A.dat
+
+  n_y_points = 320
+  n_z_points = 320
+  n_t_points = 3
+  y_min = -8 * micron
+  y_max =  8 * micron
+  z_min = -8 * micron
+  z_max =  8 * micron
+  t_start = 0
+  t_end = 30 * femto
+end:laser
+
+begin:laser
+  boundary = x_min
+  id = 2
+  lambda = 1.0 * micron
+  amp = 2.0e12
+  pol_angle = pi / 2.0
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = profile_B.dat
+
+  n_y_points = 320
+  n_z_points = 320
+  n_t_points = 3
+  y_min = -8 * micron
+  y_max =  8 * micron
+  z_min = -8 * micron
+  z_max =  8 * micron
+  t_start = 0
+  t_end = 30 * femto
+end:laser
+
+begin:output
+  dt_snapshot = 3 * femto
+  grid = always
+  ey = always
+  ez = always
+end:output

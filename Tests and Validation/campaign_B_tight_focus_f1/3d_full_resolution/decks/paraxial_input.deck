@@ -1,0 +1,87 @@
+# =====================================================================
+# Test B (3D) -- f/1 tight-focusing demo: PARAXIAL closed-form via injector
+# ---------------------------------------------------------------------
+# Injector-only, spatiotemporal path (amp+phase vary with y, z AND t).
+# Generate the files first: python ../generate_paraxial.py
+#
+# NOTE: the spatiotemporal path had a confirmed MPI abort under some
+# multi-rank decompositions (epoch3d commit 9d50a6a6, "per-rank slab"
+# storage) -- ROOT-CAUSED AND FIXED in commit aa605cca ("Fix per-rank slab
+# window vs default startup load balancing"). Confirm the Viking-side
+# epoch_dev checkout is at or past aa605cca before submitting.
+# =====================================================================
+
+begin:control
+  nx = 326
+  ny = 672
+  nz = 672
+
+  x_min = 0
+  x_max = 1.01859163578813e-5
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+  z_min = -1.0499402259312835e-5
+  z_max =  1.0499402259312835e-5
+
+  t_end = 150 * femto
+  stdout_frequency = 100
+
+  # use_pre_balance defaults to T. custom_laser.f90's local_slab_window
+  # (the aa605cca per-rank-slab optimisation) deliberately falls back to
+  # storing the FULL transverse plane on EVERY rank whenever use_balance
+  # or use_pre_balance is active (comment: "the local patch can change
+  # after this is computed ... fall back to the full plane") -- a safe
+  # but memory-heavy choice given the N_TR=1200 regenerated profile
+  # files (5.76GB each): 64 ranks x 2 files x 5.76GB = ~737GB, causing an
+  # OOM on jobs 35494107/35494109 that even --mem=480G (near the node's
+  # 515GB physical cap) can't fix. This deck has no particles (vacuum,
+  # field-only) so pre-balance (which redistributes based on particle
+  # density via auto_load) has nothing to do anyway -- disabling it is a
+  # no-op for the physics and lets local_slab_window use the real
+  # per-rank slab instead of the full-plane fallback (3 July 2026).
+  use_pre_balance = F
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+  bc_z_min = open
+  bc_z_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = spatial_profile.dat
+
+  use_phase_from_file = T
+  phase_data_file = phase_profile.dat
+
+  n_y_points = 1200
+  n_z_points = 1200
+  n_t_points = 500
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+  z_min = -1.0499402259312835e-5
+  z_max =  1.0499402259312835e-5
+  t_start = 0
+  t_end = 9e-14
+
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 10 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output
