@@ -1,10 +1,36 @@
-# Viking urgent progress-report campaign — results
+# Tests and Validation
 
-Two campaigns testing the 2D/3D file-injected laser profile pipeline
-(`use_custom_profile`/`use_spatiotemporal_profile` on `epoch_dev`). Full
-narrative, debugging log, and job IDs are in `VIKING_PROMPT_urgent_2x2_and_f1_demo.md`
-in this same folder — the rest of this folder is the distilled numbers/plots.
-See `results_summary.ipynb` for a walkthrough with commentary.
+All Viking HPC validation work for the custom laser-injection feature,
+consolidated into one place (previously split across `Viking_results/` and
+this folder — `Viking_results/` no longer exists).
+
+- **`campaign_A_injector_2x2_validation/`** and **`campaign_B_tight_focus_f1/`**
+  — the two newest (July 2026) campaigns testing the 2D/3D file-injected
+  laser profile pipeline (`use_custom_profile`/`use_spatiotemporal_profile`
+  on `epoch_dev`). Full narrative, debugging log, and job IDs are in
+  `VIKING_PROMPT_urgent_2x2_and_f1_demo.md` in this same folder. See
+  `results_summary.ipynb` for a walkthrough with commentary. Each dimension's
+  `decks/`+`scripts/`+top-level files are the distilled results (as pulled
+  from Viking); the per-cell run directories alongside them (e.g.
+  `amp_file_phase_file/`, `lasy/`, `paraxial/`) plus `generate_profile.py` /
+  `generate_lasy.py` / `generate_paraxial.py` and the campaign-level
+  `physics_params.py` are the actual profile-generator scripts and injected
+  `.dat` files that produced those decks, for anyone who wants to regenerate
+  or adapt them (kept at their original relative depth from `physics_params.py`
+  — the scripts locate it via `Path(__file__).parent.parent`, so don't move
+  them further apart). Note: `scripts/` contains the *current* `analyse.py`
+  (with the snapshot-timing-interpolation fix below); an older copy that used
+  to live alongside the generators has been dropped as stale.
+- **`2D/`** and **`3D/`** — older (June 2026) validation milestones, each
+  test folder self-contained (generator + decks + results + figures
+  together, unlike the `decks`/`scripts`/generator split above). See
+  `2D/README.md` for that batch's own workflow notes, and `3D/HANDOVER.md`
+  for the two 3D tests that were designed but postponed (not yet run).
+- **`shared_libraries/`** — common Python helpers (`viking_analysis_lib*.py`,
+  `analytical_field.py`, `physics_params_*.py`) used by the two newest
+  campaigns' analysis scripts.
+
+## Campaign A / B methodology update (3 July 2026): snapshot-timing interpolation
 
 ## Methodology update (3 July 2026): snapshot-timing interpolation
 

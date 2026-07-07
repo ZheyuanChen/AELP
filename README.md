@@ -53,7 +53,7 @@ backwards silently.
 
 - `tutorial/` — worked examples and Jupyter notebooks comparing the
   custom-profile injection against EPOCH's analytic laser profiles.
-- `Viking_results/` — HPC validation campaigns (LASY-vs-paraxial
+- `Tests and Validation/` — HPC validation campaigns (LASY-vs-paraxial
   comparisons, memory/load-balancing tests, etc.) and their analysis
   notebooks.
 - `src/` — shared Python utilities (currently an `sdf-xarray` helper for
@@ -61,7 +61,7 @@ backwards silently.
 
 ## LASY integration
 
-Several of the tests under `tutorial/` and `Viking_results/` drive EPOCH
+Several of the tests under `tutorial/` and `Tests and Validation/` drive EPOCH
 directly from a [LASY](https://github.com/LASY-org/lasy)-generated beam,
 including the amplitude/phase extraction and the LASY-to-EPOCH phase
 convention conversion documented in `DOCUMENTATION.md`. This is not yet
