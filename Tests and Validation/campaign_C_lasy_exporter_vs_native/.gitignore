@@ -1,0 +1,4 @@
+# The 3D binary pair is ~91 MB per file -- regenerate with
+# 3d/generate_lasy_exporter.py (see README.md). The 2D pair is small
+# and IS committed.
+3d/lasy_file/*.dat
