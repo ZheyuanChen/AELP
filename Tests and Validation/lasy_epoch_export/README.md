@@ -1,13 +1,16 @@
 # lasy → EPOCH raw-binary export tests
 
-Validation suite for the `file_format="epoch"` exporter added to the
+Validation suite for the `file_format="epoch"` (3D, epoch3d) and
+`file_format="epoch2d"` (lasy-y slice, epoch2d) exporters added to the
 [lasy fork](https://github.com/ZheyuanChen/lasy) (`lasy/utils/epoch_helper.py`
-plus the `Laser.write_to_file` dispatch). The exporter converts a lasy
+plus the `Laser.write_to_file` dispatch). The exporters convert a lasy
 complex envelope into the headerless amplitude/phase `.dat` pair consumed
 by the `use_spatiotemporal_profile` injection path of the
 [epoch_dev](https://github.com/ZheyuanChen/epoch_dev) fork.
 
 ## What is verified
+
+3D path (`file_format="epoch"`):
 
 | Test | Convention checked |
 |---|---|
@@ -17,8 +20,22 @@ by the `use_spatiotemporal_profile` injection path of the
 | `test_field_reconstruction_matches_lasy` | `amp·sin(ω₀t + phase)` rebuilt from the files reproduces lasy's `Re[E_env e^{−iω₀t}]` pointwise (catches phase-sign and ±π/2 carrier-offset errors) |
 | `test_phase_at_peak_is_carrier_offset` | stored phase at the amplitude peak is exactly +π/2 (cos → sin shift, φ_ref referencing) |
 | `test_phase_is_unwrapped_where_it_matters` | no 2π wrap seams between neighbouring samples where amplitude > 10⁻³ of peak (EPOCH bilinearly interpolates the phase file) |
-| `test_metadata_sidecar_reports_deck_parameters` | sidecar reports peak field (V/m), point counts, transverse extents, time window — everything the deck must declare |
-| `test_rt_geometry_is_rejected` | cylindrical (`rt`) grids refuse loudly rather than writing a misshapen file |
+| `test_metadata_sidecar_reports_deck_parameters` | sidecar reports peak field (V/m), epoch3d deck element names (n_tr1/n_tr2/n_t_points, tr extents, time window) — everything the deck must declare |
+| `test_rt_geometry_is_rejected` | cylindrical (`rt`) grids refuse loudly rather than writing a misshapen file (both formats) |
+
+2D path (`file_format="epoch2d"`, for epoch2d's `(n_transverse, n_t)` reader —
+the retained lasy x axis maps to EPOCH2d's transverse y):
+
+| Test | Convention checked |
+|---|---|
+| `test_2d_file_sizes_match_headerless_convention` | file size = n_transverse·n_t × 8 bytes |
+| `test_2d_layout_matches_y0_slice` | C-order (t, x) on disk = the y=0 plane of the envelope, Fortran (n_transverse, n_t), transverse fastest |
+| `test_2d_field_reconstruction_matches_lasy` | pointwise physics check on the slice |
+| `test_2d_phase_at_peak_is_carrier_offset` | +π/2 at the slice's peak |
+| `test_2d_phase_is_unwrapped_where_it_matters` | seam-free 2D phase |
+| `test_2d_consistent_with_3d_export` | 2D export ≡ y=0 plane of the 3D export, sample by sample (mod 2π in phase) |
+| `test_2d_metadata_reports_slice_and_deck_parameters` | epoch2d deck element names (n_y, y_min/max, n_t_points, t window) + the actual slice coordinate used |
+| `test_carrier_phase_ref_shifts_stored_phase` | `carrier_phase_ref` adds exactly that constant (the only way to set the CEP/Gouy pin, since EPOCH ignores the deck `phase` expression when the phase comes from file) |
 
 ## Conventions under test
 
@@ -27,7 +44,7 @@ lasy : E_phys = Re[E_env · exp(−iω₀t)] = |E_env| · cos(ω₀t − φ)
 EPOCH: E_phys = amp · profile · sin(∫ω dt + phase)   (laser.f90)
 
 ⇒ profile = |E_env| / max|E_env|
-  phase   = −(φ − φ_ref) + π/2
+  phase   = −(φ − φ_ref) + π/2 + carrier_phase_ref
 ```
 
 φ_ref (envelope phase at the amplitude peak) removes the arbitrary global
