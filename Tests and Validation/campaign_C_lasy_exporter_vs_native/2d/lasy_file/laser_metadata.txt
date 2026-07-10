@@ -1,0 +1,11 @@
+peak_field_V_per_m = 2.549695577426090e+13   (use for deck 'amp')
+carrier_phase_ref = -5.535743588970452e-01
+lambda0 = 1.000000000000000e-06
+slice_coord_actual = 0.000000000000000e+00   (lasy y of slice)
+# epoch2d deck fragment (lasy x -> EPOCH transverse y):
+n_y = 601   (transverse, fastest-varying on disk)
+n_t_points = 501   (slowest-varying on disk)
+y_min = -9.391485505499118e-06
+y_max = 9.391485505499118e-06
+t_start = 0.000000000000000e+00
+t_end = 3.500000000000000e-13

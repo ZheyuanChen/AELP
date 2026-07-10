@@ -1,0 +1,68 @@
+# =====================================================================
+# Campaign C (2D) -- test cell: lasy-fork exporter via file injection.
+# ---------------------------------------------------------------------
+# Same beam and grid as ../native/, but the boundary field comes from the
+# binary pair written by the lasy fork's Laser.write_to_file(
+# file_format="epoch2d") -- generate first:
+#   python ../generate_lasy_exporter.py
+# (writes laser_amplitude.dat / laser_phase.dat / laser_metadata.txt into
+# this directory; the laser block below must match the metadata sidecar).
+# amp is the native cell's value: the file amplitude is normalised to 1,
+# so the deck amp carries the physical scale for both cells identically.
+# Carrier pin: the generator bakes carrier_phase_ref = psi_bnd_2d into
+# the phase file, matching ../native/'s phase_const = pi/2 + psi_bnd_2d
+# (EPOCH ignores any deck 'phase =' expression when the phase comes from
+# file, so the pin can only live in the file).
+# =====================================================================
+
+begin:control
+  nx = 434
+  ny = 451
+
+  x_min = 0
+  x_max = 1.809557368467721e-5
+  y_min = -9.391485505499118e-6
+  y_max =  9.391485505499118e-6
+
+  t_end = 350 * femto
+  stdout_frequency = 50
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = laser_amplitude.dat
+
+  use_phase_from_file = T
+  phase_data_file = laser_phase.dat
+
+  n_y = 601
+  n_t = 501
+  y_min = -9.391485505499118e-6
+  y_max =  9.391485505499118e-6
+  t_start = 0
+  t_end = 3.5e-13
+
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 25 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output
