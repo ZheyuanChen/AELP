@@ -29,6 +29,15 @@ this folder — `Viking_results/` no longer exists).
 - **`shared_libraries/`** — common Python helpers (`viking_analysis_lib*.py`,
   `analytical_field.py`, `physics_params_*.py`) used by the two newest
   campaigns' analysis scripts.
+- **`lasy_epoch_export/`** — pytest suite (July 2026) for the
+  `file_format="epoch"` exporter added to the lasy fork, which writes the
+  headerless amplitude/phase `.dat` pair consumed by
+  `use_spatiotemporal_profile`. Pure Python (no EPOCH build or Viking runs
+  needed): verifies the on-disk Fortran layout, [0, 1] normalisation, the
+  `phase = −(φ − φ_ref) + π/2` cos→sin convention via pointwise field
+  reconstruction, seam-free phase unwrapping (the file is bilinearly
+  interpolated by EPOCH), and the deck-parameter metadata sidecar. See its
+  own `README.md` for the full test-by-test breakdown.
 
 ## Campaign A / B methodology update (3 July 2026): snapshot-timing interpolation
 
