@@ -49,6 +49,14 @@ polarisation, and current limitations. Read that before writing a profile
 generator — the array-ordering convention in particular is easy to get
 backwards silently.
 
+## Tests and Validation
+These are stored in `Tests and Validation/`. In particular, 
+* Campaign A: clean injector validation in 2D and 3D, with roughly 4.5 × 10⁻⁴% RMS waist disagreement. The independent 2D field comparison gives only 0.016% maximum relative difference.
+* Campaign B: f/1 laser beam vacuum simulation. Paraxial-vs-LASY waist disagreement is 10.0% in 2D and 14.7% in 3D (this is expected as the paraxial approximation breaks down). The 3D LASY focus position is within 0.03% of target and its waist within 1%. Note that `lasy` 2D simulations are inherently inaccurate because `lasy` generally assumes axisymmetry while EPOCH2D assumes Cartesian translational symmetry.
+* Campaign C: validation of EPOCH wrapper in lasy. under construction.
+* Others: older tests. Relevant documentation and results are stored inside each folder.
+
+
 ## Repository layout
 
 - `tutorial/` — worked examples and Jupyter notebooks comparing the
