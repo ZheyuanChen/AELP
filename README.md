@@ -9,7 +9,7 @@ propagation tool (e.g. [LASY](https://github.com/LASY-org/lasy)) or from
 any shape that isn't one of EPOCH's built-in analytic primitives.
 
 The EPOCH-side modification lives in a separate repository,
-[epoch_dev](https://github.com/ZheyuanChen/epoch_dev); this repository is
+[epoch_dev]([https://github.com/ZheyuanChen/epoch_dev](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection)); this repository is
 where it gets tested, validated, and documented for end users.
 
 ## Status
@@ -23,7 +23,7 @@ rather than in this README.
 
 ## Getting the modified EPOCH
 
-Clone [epoch_dev](https://github.com/ZheyuanChen/epoch_dev) and check out
+Clone [epoch_dev]([https://github.com/ZheyuanChen/epoch_dev](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection)) and check out
 the `upstream-pr-custom-laser-injection` branch (this is the branch sent to official EPOCH repo for a PR — the
 modification is **not** on `main`). Build it in the usual way
 (`make COMPILER=gfortran` from `epoch2d/` or `epoch3d/`). Once the pending
@@ -42,7 +42,7 @@ uv pip install -e .
 
 ## Documentation
 
-[DOCUMENTATION.md](DOCUMENTATION.md) is the full reference: deck elements
+[DOCUMENTATION_LASER_INJECTION.pdf](DOCUMENTATION_LASER_INJECTION.pdf) is the full reference: deck elements
 for both epoch2d and epoch3d, the binary file format and axis ordering,
 the phase sign convention (including the LASY conversion), two-channel
 polarisation, and current limitations. Read that before writing a profile
