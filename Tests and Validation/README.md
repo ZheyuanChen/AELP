@@ -1,8 +1,6 @@
 # Tests and Validation
 
-All Viking HPC validation work for the custom laser-injection feature,
-consolidated into one place (previously split across `Viking_results/` and
-this folder — `Viking_results/` no longer exists).
+All validation work for the custom laser-injection feature.
 
 Start with [`results_summary.ipynb`](results_summary.ipynb), the consolidated
 Campaign A/B/C review notebook. The CSV and text files beside each campaign
