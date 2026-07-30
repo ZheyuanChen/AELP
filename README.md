@@ -8,6 +8,10 @@ expression. This lets a laser profile come from an external beam
 propagation tool (e.g. [LASY](https://github.com/LASY-org/lasy)) or from
 any shape that isn't one of EPOCH's built-in analytic primitives.
 
+I have forked a copy from LASY and added some functions that make it compatible with my modified EPOCH.
+Have a check at my [repo](https://github.com/ZheyuanChen/lasy/tree/dev-zheyuan). The validation is done in campaign C. Note that the code is 
+in branch `dev-zheyuan`.
+
 I have developed a Python package for generating laser beam profile, named 
 [SCiPIC](https://github.com/ZheyuanChen/SCiPIC) (Stratton-Chu in PIC). Basically,
 it starts a beam upstream, reflects it on the parabolic mirror (OAP, HNAP, TP, or arbitrary geometry of your choice),
