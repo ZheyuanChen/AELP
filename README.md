@@ -8,6 +8,12 @@ expression. This lets a laser profile come from an external beam
 propagation tool (e.g. [LASY](https://github.com/LASY-org/lasy)) or from
 any shape that isn't one of EPOCH's built-in analytic primitives.
 
+I have developed a Python package for generating laser beam profile, named 
+[SCiPIC](https://github.com/ZheyuanChen/SCiPIC) (Stratton-Chu in PIC). Basically,
+it starts a beam upstream, reflects it on the parabolic mirror (OAP, HNAP, TP, or arbitrary geometry of your choice),
+and propagates the beam to the injection plane of the PIC simulation.
+It can directly output data files needed by my EPOCH laser injector--hassle free!
+
 The EPOCH-side modification lives on the
 [`upstream-pr-custom-laser-injection` branch of `epoch_dev`](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection);
 this repository is where it is tested, validated, and documented for end
@@ -17,11 +23,7 @@ users.
 
 Implemented and validated in both **epoch2d** and **epoch3d** (epoch1d is
 unmodified). The proposed upstream changes remain on the
-`upstream-pr-custom-laser-injection` branch rather than `main`. For the full,
-current, session-by-session history see the
-[Issues](https://github.com/ZheyuanChen/AELP/issues) tab of this repo,
-which is where day-to-day development notes and bug reports now live
-rather than in this README.
+`upstream-pr-custom-laser-injection` branch rather than `main`. 
 
 ## Getting the modified EPOCH
 
@@ -103,7 +105,4 @@ and [simulation-level validation](Tests%20and%20Validation/campaign_C_lasy_expor
 Some older tutorial scripts still show the pre-exporter, hand-written
 conversion and are retained as historical worked examples.
 
-## Known issues
 
-Tracked in this repo's [Issues](https://github.com/ZheyuanChen/AELP/issues),
-not here.
