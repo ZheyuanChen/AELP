@@ -1,0 +1,21 @@
+Campaign C (3D) -- lasy-fork exporter vs native injector
+=========================================================
+Beam: lambda0=1.000um w0=1.200um NA~0.2653
+(campaign A's beam; circularly-symmetric r_yz, FULL Gouy phase).
+
+Snapshot timing: ideal t_peak@focus = 230.180 fs;
+bracketing snapshots at 225.0 fs and
+250.0 fs (interpolation fraction
+0.207); x_focus/w0 use the fitted w(x) interpolated to
+the exact ideal time. Nearest-snapshot numbers alongside for comparison.
+
+x_focus / w0 per cell (theory: x_focus=9.0478um, w0=1.2000um):
+  native    : x_focus=  8.643976um  w0= 1.201499um   (nearest-snapshot: x_focus=  8.643692um  w0= 1.202645um)
+  lasy_file : x_focus=  8.994483um  w0= 1.199685um   (nearest-snapshot: x_focus=  8.992727um  w0= 1.199696um)
+
+w(x) RMS relative difference, lasy_file vs native = 3.118%
+Expected scale: ~1 % (lasy angular-spectrum vs paraxial at NA~0.265).
+For a pointwise field comparison, adapt campaign A's
+3d/scripts/field_comparison.py with REF/VAR set to native/lasy_file --
+the utilities are shared, only the cell names and expectation text
+change (see the 2D twin for the calibrated failure signatures).

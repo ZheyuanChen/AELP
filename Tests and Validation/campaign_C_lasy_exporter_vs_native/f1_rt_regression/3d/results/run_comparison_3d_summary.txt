@@ -1,0 +1,14 @@
+Campaign C part 3 (3D) -- run-level comparison (z=0 midplane)
+=================================================================
+New run : /mnt/scratch/users/pnd531/project_epoch/campaign_C_lasy_exporter_vs_native/3d_testB_f1/lasy_exporter
+Old run : /mnt/scratch/users/pnd531/project_epoch/lasers_in_epoch/Viking_tests_new/tight_focus_f1/3d/lasy
+Peak |Ey| (old run, z=0) : 3.8296 a0
+Snapshots                : 16
+
+Overall metrics (new-exporter run vs original-pipeline run):
+  max |difference|         : 1.075504e-02 a0
+  max |difference| / peak  : 0.2808 %
+  max relative difference  : 22.1176 %
+  mean relative difference : 0.1127 %
+
+Expectation: injector floor (~1e-3 % band) + <=0.14 % piston imprint.

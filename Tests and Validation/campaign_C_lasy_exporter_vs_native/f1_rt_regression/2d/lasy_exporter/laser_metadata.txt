@@ -1,0 +1,12 @@
+peak_field_V_per_m = 6.069567359740887e+13   (use for deck 'amp')
+carrier_phase_ref = -9.078874949608803e-01
+source_geometry = rt
+lambda0 = 1.000000000000000e-06
+slice = through-axis by symmetry (r -> |y| mirror)
+# epoch2d deck fragment (transverse axis -> EPOCH y):
+n_y = 1600   (transverse, fastest-varying on disk)
+n_t_points = 500   (slowest-varying on disk)
+y_min = -1.049940225931284e-05
+y_max = 1.049940225931284e-05
+t_start = 0.000000000000000e+00
+t_end = 9.000000000000000e-14

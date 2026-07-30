@@ -1,0 +1,14 @@
+peak_field_V_per_m = 6.069181441732805e+13   (use for deck 'amp')
+carrier_phase_ref = -2.449786631268640e-01
+source_geometry = rt
+lambda0 = 1.000000000000000e-06
+# epoch3d deck fragment:
+n_tr1 = 1200   (lasy x / Cartesian-resampled r, fastest-varying on disk)
+n_tr2 = 1200   (lasy y / Cartesian-resampled r)
+n_t_points = 500   (slowest-varying on disk)
+tr1_min = -1.049940225931284e-05
+tr1_max = 1.049940225931284e-05
+tr2_min = -1.049940225931284e-05
+tr2_max = 1.049940225931284e-05
+t_start = 0.000000000000000e+00
+t_end = 9.000000000000000e-14

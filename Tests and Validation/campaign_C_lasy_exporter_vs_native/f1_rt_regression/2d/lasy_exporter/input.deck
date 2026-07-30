@@ -1,0 +1,63 @@
+# =====================================================================
+# Campaign C part 3 (2D) -- test B f/1 beam via the lasy-fork rt EXPORTER
+# ---------------------------------------------------------------------
+# Injector-only: amplitude AND phase from the LASY-propagated binary files
+# (spatiotemporal path). Generate the files first:
+#   python ../generate_exporter_rt.py (fork rt exporter)
+# Compare against test B's ORIGINAL lasy run
+# (campaign_B_tight_focus_f1/2d/lasy/) -- same rt construction,
+# hand-rolled export. File-level crosscheck (11 July 2026): amplitude
+# bit-identical, phase 1e-14-identical where amp>1%, piston -1.4 mrad.
+# =====================================================================
+
+begin:control
+  nx = 326
+  ny = 672
+
+  x_min = 0
+  x_max = 1.01859163578813e-5
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+
+  t_end = 150 * femto
+  stdout_frequency = 100
+end:control
+
+begin:boundaries
+  bc_x_min = simple_laser
+  bc_x_max = open
+  bc_y_min = open
+  bc_y_max = open
+end:boundaries
+
+begin:laser
+  boundary = x_min
+  lambda = 1.0 * micron
+  amp = 3.2e12
+
+  use_custom_profile = T
+  use_spatiotemporal_profile = T
+  profile_data_file = laser_amplitude.dat
+
+  use_phase_from_file = T
+  phase_data_file = laser_phase.dat
+
+  n_y = 1600
+  n_t = 500
+  y_min = -1.0499402259312835e-5
+  y_max =  1.0499402259312835e-5
+  t_start = 0
+  t_end = 9e-14
+
+  polarisation_angle = 0.0
+end:laser
+
+begin:output
+  dt_snapshot = 10 * femto
+  grid = always
+  ex = always
+  ey = always
+  ez = always
+  by = always
+  bz = always
+end:output

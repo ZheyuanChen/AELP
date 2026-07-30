@@ -1,0 +1,20 @@
+Campaign C (2D) -- field comparison: native deck vs lasy-exporter file injection
+================================================================================
+Reference  : native (Native deck (paraxial expression))
+Comparison : lasy_file (lasy exporter (file-injected))
+Peak |Ey|  : 1.4718 a0
+Snapshots  : 15
+
+Overall metrics (vs native reference):
+  max |difference|         : 5.236412e-02 a0
+  max |difference| / peak  : 3.557734 %
+  max relative difference  : 71.398600 %
+  mean relative difference : 5.738730 %
+
+Expected: ~1-2 % of peak, smooth and amplitude-dominated (the known
+lasy-vs-paraxial physics gap at NA~0.265) -- NOT campaign A's ~1e-3 %
+injector floor, and NOT ~200 % (sign-flipped carrier) or a uniform
+few-10s-of-% offset (carrier-pin/CEP mismatch); see module docstring.
+
+Animation: /mnt/scratch/users/pnd531/project_epoch/campaign_C_lasy_exporter_vs_native/2d/results/animations/field_comparison.gif
+Screenshots: field_comparison_t*.png in results/figures/
