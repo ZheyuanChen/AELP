@@ -2,3 +2,7 @@
 # 3d/generate_lasy_exporter.py (see README.md). The 2D pair is small
 # and IS committed.
 3d/lasy_file/*.dat
+
+# The f/1 regression profiles are generated artefacts: ~6.4 MB per 2D
+# file and ~5.8 GB per 3D file. Regenerate them from the retained scripts.
+f1_rt_regression/*/lasy_exporter/*.dat

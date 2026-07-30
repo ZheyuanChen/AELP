@@ -1,7 +1,15 @@
-This is for those who want to run the simulation and data-analysis.
-To look at the results see viking_validation_results.ipynb. If the notebook doesn't render properly, you can run it directly. Required results (mostly png, txt, and csv) are included in the repo. The notebook can easily be run on a local machine -- no need for HPC. In fact, the simulations may be able to be run locally. The resolution is not crazy, and they are vacuum simulations.
-
 # Viking laser-injection validation tests
+
+> **Status:** historical June 2026 milestones. See
+> [`../results_summary.ipynb`](../results_summary.ipynb) for the current
+> Campaign A/B/C validation record.
+
+This folder is for reproducing the earlier simulations and analysis. Review
+the retained results in
+[`viking_validation_results.ipynb`](viking_validation_results.ipynb); the
+PNG, text, and CSV inputs needed to execute that notebook locally are included.
+The EPOCH simulations themselves are vacuum runs, but their high-resolution
+3D case remains more appropriate for HPC.
 
 High-resolution versions of the three laser-injection comparison milestones,
 packaged for running **head-less on Viking** (or any HPC node). The laptop
@@ -27,7 +35,7 @@ analysis scripts import the shared lib via a relative path (`../common`).
   * epoch2d for tests 1 and 2 (amplitude **and** phase from file — the latter
     needs the `use_phase_from_file` / `phase_data_file` deck elements)
   * epoch3d for test 3 (spatial-only custom profile)
-* Python: `numpy scipy matplotlib xarray sdf-xarray` for analysis;
+* Python: `numpy scipy matplotlib pandas xarray sdf-xarray` for analysis;
   additionally `lasy` (>= 0.7.0) for the Test 2 LASY generator.
 
 ## Workflow on Viking

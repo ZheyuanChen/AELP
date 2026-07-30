@@ -1,4 +1,4 @@
-# lasy → EPOCH raw-binary export tests
+# LASY → EPOCH raw-binary export baseline tests
 
 Validation suite for the `file_format="epoch"` (3D, epoch3d) and
 `file_format="epoch2d"` (lasy-y slice, epoch2d) exporters added to the
@@ -7,6 +7,16 @@ plus the `Laser.write_to_file` dispatch). The exporters convert a lasy
 complex envelope into the headerless amplitude/phase `.dat` pair consumed
 by the `use_spatiotemporal_profile` injection path of the
 [epoch_dev](https://github.com/ZheyuanChen/epoch_dev) fork.
+
+> **Version boundary:** this 16-test AELP suite records the initial Cartesian
+> (`xyt`) exporter at LASY commit `83d2b3e`. Its
+> `test_rt_geometry_is_rejected` is intentionally historical. Commit
+> `aaacc68` subsequently added supported mode-0 `rt` export, with seven
+> current `rt`/`xyt` tests in
+> [`lasy/tests/test_epoch_export.py`](https://github.com/ZheyuanChen/lasy/blob/dev-zheyuan/tests/test_epoch_export.py).
+> Run the suite in this folder against `83d2b3e`, or run the LASY fork's own
+> tests against `aaacc68` and later. Campaign C provides the current
+> simulation-level `rt` validation.
 
 ## What is verified
 
@@ -48,17 +58,25 @@ EPOCH: E_phys = amp · profile · sin(∫ω dt + phase)   (laser.f90)
 ```
 
 φ_ref (envelope phase at the amplitude peak) removes the arbitrary global
-phase that lasy's angular-spectrum propagator adds; the absolute
-carrier-envelope phase is then set by the deck's own `phase` parameter.
+phase that LASY's angular-spectrum propagator adds; the absolute
+carrier-envelope phase is set by `carrier_phase_ref` in the file because
+EPOCH ignores the deck `phase` expression when `use_phase_from_file = T`.
 
 ## Running
 
-Requires the lasy fork importable (editable install) plus `numpy`, `scipy`
-and `pytest`. No EPOCH build or SDF files needed — the suite is pure
-Python and runs in about a second:
+Requires the LASY fork at `83d2b3e` importable (editable install) plus
+`numpy`, `scipy`, and `pytest`. No EPOCH build or SDF files are needed — the
+suite is pure Python and runs in about a second:
 
 ```bash
 pytest test_lasy_epoch_export.py -v
+```
+
+For the current `dev-zheyuan` branch (`aaacc68` or later), run the fork's
+version-matched suite instead:
+
+```bash
+pytest tests/test_epoch_export.py -v
 ```
 
 The suite was negative-control checked: flipping the carrier offset back

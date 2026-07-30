@@ -4,12 +4,27 @@ All Viking HPC validation work for the custom laser-injection feature,
 consolidated into one place (previously split across `Viking_results/` and
 this folder — `Viking_results/` no longer exists).
 
-- **`campaign_A_injector_2x2_validation/`** and **`campaign_B_tight_focus_f1/`**
-  — the two newest (July 2026) campaigns testing the 2D/3D file-injected
-  laser profile pipeline (`use_custom_profile`/`use_spatiotemporal_profile`
-  on `epoch_dev`). Full narrative, debugging log, and job IDs are in
-  `VIKING_PROMPT_urgent_2x2_and_f1_demo.md` in this same folder. See
-  `results_summary.ipynb` for a walkthrough with commentary. Each dimension's
+Start with [`results_summary.ipynb`](results_summary.ipynb), the consolidated
+Campaign A/B/C review notebook. The CSV and text files beside each campaign
+remain the authoritative numerical results.
+
+| Campaign | Validation question | Headline result |
+|---|---|---|
+| A | Does binary amplitude/phase injection reproduce native deck evaluation? | $4.486\times10^{-4}\%$ (2D) and $4.458\times10^{-4}\%$ (3D) RMS $w(x)$ disagreement |
+| B | Does a non-paraxial LASY field materially change an $f/1$ vacuum focus? | 10.020% (2D) and 14.704% (3D) RMS paraxial-vs-LASY $w(x)$ difference |
+| C | Does LASY's reusable EPOCH exporter reproduce the validated hand-written export? | 0.474% (2D) and 0.281% (3D mid-plane) maximum peak-normalised propagated-field difference |
+
+The three claims are complementary: A isolates EPOCH's file-injection
+mechanics, B is a tight-focus LASY demonstration, and C isolates the reusable
+LASY exporter. They are vacuum propagation tests and do not by themselves
+validate plasma, particle, or QED behaviour.
+
+## Directory map
+
+- **`campaign_A_injector_2x2_validation/`** and
+  **`campaign_B_tight_focus_f1/`** — the July 2026 injector and tight-focus
+  campaigns. Detailed methodology, debugging history, job IDs, and resource
+  use are retained below. Each dimension's
   `decks/`+`scripts/`+top-level files are the distilled results (as pulled
   from Viking); the per-cell run directories alongside them (e.g.
   `amp_file_phase_file/`, `lasy/`, `paraxial/`) plus `generate_profile.py` /
@@ -24,35 +39,47 @@ this folder — `Viking_results/` no longer exists).
 - **`2D/`** and **`3D/`** — older (June 2026) validation milestones, each
   test folder self-contained (generator + decks + results + figures
   together, unlike the `decks`/`scripts`/generator split above). See
-  `2D/README.md` for that batch's own workflow notes, and `3D/HANDOVER.md`
-  for the two 3D tests that were designed but postponed (not yet run).
+  `2D/viking_validation_results.ipynb` for the historical review,
+  `2D/README.md` for that batch's workflow notes, and `3D/HANDOVER.md` for
+  the two 3D tests that were designed but postponed (not yet run).
 - **`shared_libraries/`** — common Python helpers (`viking_analysis_lib*.py`,
-  `analytical_field.py`, `physics_params_*.py`) used by the two newest
-  campaigns' analysis scripts.
-- **`lasy_epoch_export/`** — pytest suite (July 2026) for the
-  `file_format="epoch"` (3D) and `"epoch2d"` (lasy-y slice) exporters
-  added to the lasy fork, which write the headerless amplitude/phase
-  `.dat` pair consumed by `use_spatiotemporal_profile`. Pure Python (no
-  EPOCH build or Viking runs needed): verifies the on-disk Fortran
-  layouts, [0, 1] normalisation, the
+  `analytical_field.py`, `physics_params_*.py`) used by the Campaign A/B
+  analysis scripts.
+- **`lasy_epoch_export/`** — baseline pytest suite for the first Cartesian
+  (`xyt`) LASY exporter (`83d2b3e`). It verifies the headerless
+  amplitude/phase pair consumed by `use_spatiotemporal_profile`: on-disk
+  Fortran layouts, [0, 1] normalisation, the
   `phase = −(φ − φ_ref) + π/2 + carrier_phase_ref` cos→sin convention via
   pointwise field reconstruction, seam-free phase unwrapping (the file is
   bilinearly interpolated by EPOCH), 2D/3D cross-consistency, and the
-  deck-parameter metadata sidecar. See its own `README.md` for the full
-  test-by-test breakdown.
-- **`campaign_C_lasy_exporter_vs_native/`** — the simulation-level
-  complement (July 2026, designed; Viking runs pending): the in-lasy
-  exporter end-to-end in real EPOCH runs vs EPOCH's native deck Gaussian,
-  recycling campaign A's beam/grids/native decks and campaign B's lasy
-  pipeline. Includes a local no-EPOCH gate
-  (`2d/crosscheck_legacy_pipeline.py`: new exporter vs campaign B's
-  hand-rolled conversion — measured agreement ~6e-4 of peak) and
-  `VIKING_PROMPT_campaign_C.md` with resource estimates. Expected
-  cell-vs-cell residual is the ~1–2 % lasy-vs-paraxial physics gap, not
-  campaign A's ~1e-3 % injector floor — see its `README.md` for the
-  calibrated failure signatures.
+  deck-parameter metadata sidecar. Its historical `rt`-rejection test predates
+  the supported `rt` path added at `aaacc68`; the seven current `rt`/`xyt`
+  exporter tests live in the LASY fork. See the suite's `README.md` for the
+  version boundary.
+- **`campaign_C_lasy_exporter_vs_native/`** — complete (10–11 July 2026):
+  end-to-end validation of the in-LASY EPOCH exporter in 2D and 3D. The
+  moderate-NA comparison against EPOCH's native paraxial source gives 2.50%
+  (2D) and 3.12% (3D) RMS waist-curve differences, with smooth field
+  residuals. The more discriminating f/1 regression reproduces Campaign B's
+  validated hand-written export to numerical precision in the file core and
+  to 0.47% (2D) / 0.28% (3D midplane) in propagated peak-normalised field.
+  See its `README.md` for the evidence and interpretation caveats.
 
-## Campaign A / B methodology update (3 July 2026): snapshot-timing interpolation
+## Evidence provenance
+
+- The 49 retained Campaign A/B decks, scripts, CSVs, summaries, and figures
+  were rechecked byte-for-byte against the archived 3–4 July result bundle on
+  30 July 2026.
+- The separately archived 8 July `waist_vs_x.png` is byte-identical to
+  Campaign A's retained 2D waist figure; it is not a distinct result.
+- Campaign A/B execution logs record an `epoch_dev` rebuild at commit
+  `aa605cca` before submission. Campaign C records LASY exporter commit
+  `aaacc68` and a successful 64-rank epoch3d spatiotemporal smoke test; its
+  copied public result bundle does not retain the exact `epoch_dev` SHA.
+- Original SDF snapshots remain off-repository. The retained decks,
+  generators, analysis scripts, machine-readable metrics, summaries, and
+  representative figures support review without presenting a local notebook
+  rerun as a new simulation.
 
 ## Methodology update (3 July 2026): snapshot-timing interpolation
 
@@ -99,10 +126,13 @@ above is already conclusive).
 describe the beam, or does non-paraxial (LASY angular-spectrum)
 propagation differ measurably? Injector-only — no native-deck baseline.
 
-- **`2d/`** — full-resolution, complete and trustworthy. **Key number:
-  10.0% RMS difference** between paraxial and LASY beam-waist curves
-  (was 10.9% before the timing-interpolation fix above), confirming the
-  paraxial approximation breaks down at f/1 as expected.
+- **`2d/`** — full-resolution and complete. **Key number: 10.0% RMS
+  difference** between paraxial and LASY beam-waist curves (was 10.9% before
+  the timing-interpolation fix above). The run and analysis are numerically
+  valid, but the LASY source is an axisymmetric `rt` field sliced into
+  EPOCH2D's translationally invariant slab geometry. Treat this as an
+  illustrative tight-focus comparison rather than a quantitative 2D
+  non-paraxial reference.
 - **`3d_smoke_test/`** — coarse-resolution (~2M cells vs. 147.2M full-res)
   sanity check, run before committing the full 3D allocation. Both
   generators show a genuine converging waist minimum (not the
@@ -148,22 +178,21 @@ Regenerating the files bigger also surfaced a separate memory bug when
 rerunning at full resolution — see the `use_pre_balance` finding further
 down, which was blocking and is now also resolved.
 
-**Side finding, relevant beyond this campaign — `use_pre_balance` vs.
-large injected files.** Regenerating the `.dat` files bigger (N_TR=1200)
-triggered an OOM even at `--mem 480G`: EPOCH's per-rank-slab optimisation
-for large spatiotemporal injector files (`custom_laser.f90`,
-`local_slab_window`) has a documented fallback to storing the FULL file
-on EVERY rank whenever `use_pre_balance` (defaults to `.TRUE.`, startup
-load balancing) is active — `64 ranks x 2 files x 5.76GB ~= 737GB`, more
-than a node's 515GB. Fixed here by setting `use_pre_balance = F` in both
-decks, safe only because these are particle-free (vacuum) runs with
-nothing for pre-balance to do. **This will NOT generalise** to a future
-particle simulation that needs both real load balancing (non-uniform
-particle density) AND a large injected file — that combination has no
-current fix short of a coarser file, more memory/nodes, or a genuine
-source change in `custom_laser.f90` to compute the per-rank window after
-pre-balance settles instead of needing a defensive fallback. Full
-technical detail in `VIKING_PROMPT_urgent_2x2_and_f1_demo.md`.
+**Historical side finding — `use_pre_balance` and large injected files.**
+Regenerating the `.dat` files at `N_TR=1200` triggered an OOM even at
+`--mem 480G`: in the build used at that point, default startup balancing
+forced every rank to store the full spatiotemporal plane
+(`64 ranks x 2 files x 5.76GB ~= 737GB`). Campaign B therefore set
+`use_pre_balance = F` in its particle-free vacuum decks; memory fell to
+30 GB. Those decks are retained unchanged for exact run provenance.
+
+This is no longer the current source limitation. Later `epoch_dev` work
+defers the first slab load until startup balancing settles (`6ac93129`) and
+re-slabs after real dynamic redistributions (`093714bf` on the local
+`upstream-pr-custom-laser-injection` branch). The focused multi-rank
+regressions pass. A production-scale Viking test with large `N_TR`, particles,
+and genuine dynamic load balancing remains outstanding; transverse moving
+windows still require the documented full-plane fallback.
 
 ## Resource usage (actual, not requested)
 

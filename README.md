@@ -8,26 +8,29 @@ expression. This lets a laser profile come from an external beam
 propagation tool (e.g. [LASY](https://github.com/LASY-org/lasy)) or from
 any shape that isn't one of EPOCH's built-in analytic primitives.
 
-The EPOCH-side modification lives in a separate repository,
-[epoch_dev]([https://github.com/ZheyuanChen/epoch_dev](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection)); this repository is
-where it gets tested, validated, and documented for end users.
+The EPOCH-side modification lives on the
+[`upstream-pr-custom-laser-injection` branch of `epoch_dev`](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection);
+this repository is where it is tested, validated, and documented for end
+users.
 
 ## Status
 
 Implemented and validated in both **epoch2d** and **epoch3d** (epoch1d is
-unmodified). A pull request to merge this upstream into EPOCH is in
-preparation. For the full, current, session-by-session history see the
+unmodified). The proposed upstream changes remain on the
+`upstream-pr-custom-laser-injection` branch rather than `main`. For the full,
+current, session-by-session history see the
 [Issues](https://github.com/ZheyuanChen/AELP/issues) tab of this repo,
 which is where day-to-day development notes and bug reports now live
 rather than in this README.
 
 ## Getting the modified EPOCH
 
-Clone [epoch_dev]([https://github.com/ZheyuanChen/epoch_dev](https://github.com/ZheyuanChen/epoch_dev/tree/upstream-pr-custom-laser-injection)) and check out
-the `upstream-pr-custom-laser-injection` branch (this is the branch sent to official EPOCH repo for a PR — the
-modification is **not** on `main`). Build it in the usual way
+Clone [`epoch_dev`](https://github.com/ZheyuanChen/epoch_dev) and check out
+the `upstream-pr-custom-laser-injection` branch (the modification is **not**
+on `main`). Build it in the usual way
 (`make COMPILER=gfortran` from `epoch2d/` or `epoch3d/`). Once the pending
-pull request is merged upstream, this step will no longer be necessary.
+changes are available upstream, this fork-specific step will no longer be
+necessary.
 
 ## Installation
 
@@ -42,20 +45,39 @@ uv pip install -e .
 
 ## Documentation
 
-[DOCUMENTATION_LASER_INJECTION.pdf](DOCUMENTATION_LASER_INJECTION.pdf) is the full reference: deck elements
-for both epoch2d and epoch3d, the binary file format and axis ordering,
-the phase sign convention (including the LASY conversion), two-channel
-polarisation, and current limitations. Read that before writing a profile
-generator — the array-ordering convention in particular is easy to get
-backwards silently.
+[DOCUMENTATION_LASER_INJECTION.pdf](DOCUMENTATION_LASER_INJECTION.pdf) is
+the full reference: deck elements for both epoch2d and epoch3d, the binary
+file format and axis ordering, the phase sign convention (including the LASY
+conversion), two-channel polarisation, and current limitations. Read that
+before writing a profile generator — the array-ordering convention in
+particular is easy to get backwards silently.
 
 ## Tests and Validation
-These are stored in `Tests and Validation/`. In particular, 
-* Campaign A: clean injector validation in 2D and 3D, with roughly 4.5 × 10⁻⁴% RMS waist disagreement. The independent 2D field comparison gives only 0.016% maximum relative difference.
-* Campaign B: f/1 laser beam vacuum simulation. Paraxial-vs-LASY waist disagreement is 10.0% in 2D and 14.7% in 3D (this is expected as the paraxial approximation breaks down). The 3D LASY focus position is within 0.03% of target and its waist within 1%. Note that `lasy` 2D simulations are inherently inaccurate because `lasy` generally assumes axisymmetry while EPOCH2D assumes Cartesian translational symmetry.
-* Campaign C: validation of EPOCH wrapper in lasy. under construction.
-* Others: older tests. Relevant documentation and results are stored inside each folder.
 
+Start with the
+[Campaign A/B/C results notebook](Tests%20and%20Validation/results_summary.ipynb)
+and the [validation index](Tests%20and%20Validation/README.md).
+
+- **Campaign A — injector isolation:** file amplitude/phase injection agrees
+  with native deck evaluation to about $4.5\times10^{-4}\%$ RMS in fitted
+  beam waist in both 2D and 3D. The independent 2D raw-field comparison is
+  bounded by 0.016% maximum relative difference (0.0011% of the reference
+  peak).
+- **Campaign B — $f/1$ LASY demonstration:** paraxial-vs-LASY waist curves
+  differ by 10.0% RMS in 2D and 14.7% in 3D. In 3D, the LASY focus is within
+  0.03% of target and its waist within 1%; the 2D LASY result is illustrative
+  because an axisymmetric LASY field is propagated in EPOCH2D's slab
+  geometry.
+- **Campaign C — LASY exporter:** the reusable LASY-to-EPOCH exporter passes
+  end-to-end validation. Against Campaign B's hand-written export, propagated
+  fields agree within 0.47% of peak in 2D and 0.28% on the 3D mid-plane. The
+  [Campaign C report](Tests%20and%20Validation/campaign_C_lasy_exporter_vs_native/README.md)
+  separates this exporter-isolating result from the moderate-NA
+  LASY-vs-paraxial physics comparison.
+
+These are vacuum field-propagation tests. They validate the profile delivery
+and propagation path, not plasma coupling, particle dynamics, or QED
+observables.
 
 ## Repository layout
 
@@ -72,10 +94,14 @@ These are stored in `Tests and Validation/`. In particular,
 Several of the tests under `tutorial/` and `Tests and Validation/` drive EPOCH
 directly from a [LASY](https://github.com/LASY-org/lasy)-generated beam,
 including the amplitude/phase extraction and the LASY-to-EPOCH phase
-convention conversion documented in `DOCUMENTATION.md`. This is not yet
-packaged as a standalone, reusable wrapper — each test script currently
-does its own LASY setup — but the conversion logic itself is stable and
-validated (see the phase convention section of the documentation).
+conversion documented in
+[the laser-injection reference](DOCUMENTATION_LASER_INJECTION.pdf). The
+reusable exporter lives in the LASY fork as
+`Laser.write_to_file(file_format="epoch" / "epoch2d")`; AELP retains its
+[format/convention tests](Tests%20and%20Validation/lasy_epoch_export/README.md)
+and [simulation-level validation](Tests%20and%20Validation/campaign_C_lasy_exporter_vs_native/README.md).
+Some older tutorial scripts still show the pre-exporter, hand-written
+conversion and are retained as historical worked examples.
 
 ## Known issues
 

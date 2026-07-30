@@ -1,11 +1,16 @@
 # Handover — postponed 3D validation tests
 
-Built in the same session as `../VIKING_PROMPT_urgent_2x2_and_f1_demo.md`
-(2 July 2026), but **postponed** in favour of the two urgent progress-
-report campaigns (`../injector_2x2_validation/`, `../tight_focus_f1/`).
-Not yet submitted to Viking. Pick this up whenever the urgent work is
-done — everything below is designed and, where noted, already smoke-
-tested locally at low resolution.
+> **Status:** historical design hand-over. Campaigns A/B/C and the current
+> validation conclusions are summarised in
+> [`../results_summary.ipynb`](../results_summary.ipynb). The two tests in
+> this folder remain postponed.
+
+Built on 2 July 2026, but **postponed** in favour of the urgent
+[`Campaign A`](../campaign_A_injector_2x2_validation/) and
+[`Campaign B`](../campaign_B_tight_focus_f1/) runs. Their execution history
+is retained in [`../README.md`](../README.md). The tests below have not been
+submitted to Viking; everything is designed and, where noted, was
+smoke-tested locally at low resolution.
 
 ## test1_converging_gaussian/ — moderate-NA 3D field-level benchmark
 
@@ -14,11 +19,11 @@ to the right focus/waist), NOT yet run at full Viking resolution.**
 
 What it tests: quantitative validation of the file-injection pipeline
 against closed-form Gaussian-beam theory (waist position, waist size,
-transverse-power energy conservation), at moderate NA (~0.265, same beam
-as `../injector_2x2_validation/`) — the "does the whole pipeline reproduce
-known physics" check, one level more demanding than the file-vs-native
-comparison in Campaign A (which only checks internal consistency, not
-absolute correctness against theory).
+transverse-power energy conservation), at moderate NA (~0.265, the same beam
+as `../campaign_A_injector_2x2_validation/`) — the "does the whole pipeline
+reproduce known physics" check, one level more demanding than the
+file-vs-native comparison in Campaign A (which only checks internal
+consistency, not absolute correctness against theory).
 
 Files: `physics_params.py` (single source of truth), `generate_profile.py`
 (writes the static (y,z) amplitude+phase planes), `numerical/input.deck`
@@ -73,20 +78,17 @@ Resource estimate: 480x480x480 = 110.6M cells, vacuum, `t_end`=30fs ->
 per the sizing table (3D vacuum 50-200M) **`--ntasks 48 --time 2:00:00`**
 (short run, small `t_end`, generous padding).
 
-## Open items not addressed this session
+## Open items
 
-- Campaign B's (`tight_focus_f1/`) `analyse.py` was not written for either
-  dimensionality — see the urgent prompt's note on adapting the waist-scan
-  approach or the existing `compare_f1_vs_paraxial.py`.
+- Campaign B's analysis is now complete and retained under
+  `../campaign_B_tight_focus_f1/`; no analysis implementation is outstanding
+  there.
 - `dev_test/laser_profile_injection/tight_focusing_f1/` (30 June, 2D,
   array-only, text format) is now stale against current epoch2d (binary-
   only) — not updated this session; superseded in spirit by
-  `tight_focus_f1/2d/` here but the old scripts/results are still useful
-  reference material (documented physics, known issues) and weren't
-  deleted.
-- The earlier local `dev_test/laser_profile_injection/epoch3d_
-  verification/` battery (boundary coverage, alias-error edge cases,
-  exact-grid-node sampling, file-size-abort variants — see the test design
-  discussion earlier in this session) is still only partially executed
-  (Test 1 of 8, the y_min boundary check, completed and passed). Lower
-  priority than the physics-benchmark tests above; resume if time allows.
+  Campaign B but the old scripts/results remain useful historical reference
+  material.
+- The broader local epoch3d custom-laser regression suite has since advanced
+  beyond the partial state described in the original hand-over. Consult the
+  current `epoch_dev` and `Project_EPOCH` validation reports before using
+  this dated checklist as an execution authority.

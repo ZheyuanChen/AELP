@@ -13,8 +13,8 @@
 # matching ../native/'s phase_const = pi/2 + psi_bnd_3d.
 # NOTE (epoch3d spatiotemporal + MPI): this path previously aborted under
 # multi-rank domain decomposition (pre-slab-loading builds); smoke-test a
-# small run at the production rank count before the full job -- see
-# ../../VIKING_PROMPT_campaign_C.md.
+# small run at the production rank count before the full job. See the
+# campaign README for the retained generation and validation workflow.
 # =====================================================================
 
 begin:control
